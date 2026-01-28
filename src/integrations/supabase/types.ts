@@ -56,6 +56,48 @@ export type Database = {
         }
         Relationships: []
       }
+      portfolio_projects: {
+        Row: {
+          created_at: string
+          description_ar: string
+          description_en: string
+          display_order: number
+          id: string
+          image_url: string
+          project_link: string
+          status: string
+          title_ar: string
+          title_en: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description_ar: string
+          description_en: string
+          display_order?: number
+          id?: string
+          image_url: string
+          project_link: string
+          status?: string
+          title_ar: string
+          title_en: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description_ar?: string
+          description_en?: string
+          display_order?: number
+          id?: string
+          image_url?: string
+          project_link?: string
+          status?: string
+          title_ar?: string
+          title_en?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
