@@ -1,59 +1,49 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef } from 'react';
-import { ExternalLink } from 'lucide-react';
+import React, { useRef, useEffect, useState } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { ExternalLink, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
 
-const projects = [
-  {
-    title: 'E-Commerce Platform',
-    titleAr: 'منصة تجارة إلكترونية',
-    category: 'Web Development',
-    categoryAr: 'تطوير الويب',
-    image: 'https://images.unsplash.com/photo-1661956602116-aa6865609028?w=800&q=80',
-  },
-  {
-    title: 'Banking Mobile App',
-    titleAr: 'تطبيق بنكي',
-    category: 'Mobile Development',
-    categoryAr: 'تطوير التطبيقات',
-    image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80',
-  },
-  {
-    title: 'Healthcare Dashboard',
-    titleAr: 'لوحة تحكم صحية',
-    category: 'UI/UX Design',
-    categoryAr: 'تصميم واجهات',
-    image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80',
-  },
-  {
-    title: 'Real Estate Platform',
-    titleAr: 'منصة عقارية',
-    category: 'Web Development',
-    categoryAr: 'تطوير الويب',
-    image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80',
-  },
-  {
-    title: 'Fitness Tracking App',
-    titleAr: 'تطبيق لياقة بدنية',
-    category: 'Mobile Development',
-    categoryAr: 'تطوير التطبيقات',
-    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80',
-  },
-  {
-    title: 'Restaurant Booking System',
-    titleAr: 'نظام حجز مطاعم',
-    category: 'Full Stack',
-    categoryAr: 'تطوير متكامل',
-    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80',
-  },
-];
+interface PortfolioProject {
+  id: string;
+  title_en: string;
+  title_ar: string;
+  description_en: string;
+  description_ar: string;
+  image_url: string;
+  project_link: string;
+  status: string;
+  display_order: number;
+}
 
 export default function PortfolioSection() {
   const { t, language, dir } = useLanguage();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const [projects, setProjects] = useState<PortfolioProject[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('portfolio_projects')
+          .select('*')
+          .eq('status', 'active')
+          .order('display_order', { ascending: true });
+
+        if (error) throw error;
+        setProjects(data || []);
+      } catch (error) {
+        console.error('Error fetching portfolio projects:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
 
   return (
     <section id="portfolio" className="py-20 md:py-32 relative overflow-hidden">
@@ -73,48 +63,70 @@ export default function PortfolioSection() {
           </h2>
         </motion.div>
 
+        {/* Loading State */}
+        {loading && (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          </div>
+        )}
+
         {/* Projects Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {projects.map((project, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group relative rounded-2xl overflow-hidden bg-card border border-border hover:border-primary/30 transition-all duration-300"
-            >
-              {/* Image */}
-              <div className="aspect-[4/3] overflow-hidden">
-                <img
-                  src={project.image}
-                  alt={language === 'ar' ? project.titleAr : project.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
+        {!loading && (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            {projects.map((project, index) => (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="group bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/30 hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+              >
+                {/* Image */}
+                <div className="aspect-[16/10] overflow-hidden relative">
+                  <img
+                    src={project.image_url}
+                    alt={language === 'ar' ? project.title_ar : project.title_en}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  {/* Overlay on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
 
-              {/* Content */}
-              <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary backdrop-blur-sm mb-2">
-                  {language === 'ar' ? project.categoryAr : project.category}
-                </span>
-                <h3 className={`text-xl font-bold text-foreground mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${dir === 'rtl' ? 'font-arabic-heading' : ''}`}>
-                  {language === 'ar' ? project.titleAr : project.title}
-                </h3>
-                <button className="inline-flex items-center gap-2 text-sm font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:underline">
-                  {t('portfolio.viewProject')}
-                  <ExternalLink className="w-4 h-4" />
-                </button>
-              </div>
+                {/* Content */}
+                <div className="p-6">
+                  <h3 className={`text-xl font-bold mb-3 line-clamp-2 group-hover:text-primary transition-colors ${dir === 'rtl' ? 'font-arabic-heading' : ''}`}>
+                    {language === 'ar' ? project.title_ar : project.title_en}
+                  </h3>
+                  <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
+                    {language === 'ar' ? project.description_ar : project.description_en}
+                  </p>
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full group/btn hover:bg-primary hover:text-primary-foreground hover:border-primary"
+                  >
+                    <a
+                      href={project.project_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2"
+                    >
+                      {t('portfolio.viewProject')}
+                      <ExternalLink className={`w-4 h-4 transition-transform group-hover/btn:scale-110 ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`} />
+                    </a>
+                  </Button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
 
-              {/* Corner Badge */}
-              <div className={`absolute top-4 ${dir === 'rtl' ? 'left-4' : 'right-4'} w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300`}>
-                <ExternalLink className="w-5 h-5 text-primary" />
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        {/* Empty State */}
+        {!loading && projects.length === 0 && (
+          <div className="text-center py-12 text-muted-foreground">
+            {language === 'ar' ? 'لا توجد مشاريع حالياً' : 'No projects available'}
+          </div>
+        )}
       </div>
     </section>
   );

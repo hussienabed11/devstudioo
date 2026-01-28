@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Loader2, Trash2, CheckCircle, XCircle, Clock, RefreshCw } from 'lucide-react';
+import { ArrowLeft, Loader2, Trash2, CheckCircle, XCircle, Clock, RefreshCw, Calendar, Image } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Table,
   TableBody,
@@ -34,6 +35,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import PortfolioManagement from '@/components/admin/PortfolioManagement';
 
 type BookingStatus = 'pending' | 'approved' | 'rejected';
 
@@ -64,6 +66,7 @@ export default function Admin() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState('bookings');
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -178,152 +181,178 @@ export default function Admin() {
               {t('admin.title')}
             </h1>
           </div>
-          <Button onClick={fetchBookings} variant="outline" className="gap-2">
-            <RefreshCw className="w-4 h-4" />
-            {language === 'ar' ? 'تحديث' : 'Refresh'}
-          </Button>
         </motion.div>
 
-        {/* Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"
-        >
-        <div className="bg-primary/10 text-primary rounded-xl p-4 border border-primary/20">
-            <div className="text-2xl font-bold">{bookings.length}</div>
-            <div className="text-sm opacity-80">{language === 'ar' ? 'الكل' : 'Total'}</div>
-          </div>
-          <div className="bg-accent/20 text-accent-foreground rounded-xl p-4 border border-accent/30">
-            <div className="text-2xl font-bold">{bookings.filter(b => b.status === 'pending').length}</div>
-            <div className="text-sm opacity-80">{t('admin.status.pending')}</div>
-          </div>
-          <div className="bg-secondary/20 text-secondary-foreground rounded-xl p-4 border border-secondary/30">
-            <div className="text-2xl font-bold">{bookings.filter(b => b.status === 'approved').length}</div>
-            <div className="text-sm opacity-80">{t('admin.status.approved')}</div>
-          </div>
-          <div className="bg-destructive/10 text-destructive rounded-xl p-4 border border-destructive/20">
-            <div className="text-2xl font-bold">{bookings.filter(b => b.status === 'rejected').length}</div>
-            <div className="text-sm opacity-80">{t('admin.status.rejected')}</div>
-          </div>
-        </motion.div>
+        {/* Tabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="grid w-full max-w-md grid-cols-2">
+            <TabsTrigger value="bookings" className="gap-2">
+              <Calendar className="w-4 h-4" />
+              {t('admin.bookings')}
+            </TabsTrigger>
+            <TabsTrigger value="portfolio" className="gap-2">
+              <Image className="w-4 h-4" />
+              {t('admin.portfolio')}
+            </TabsTrigger>
+          </TabsList>
 
-        {/* Table */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-card border border-border rounded-xl overflow-hidden"
-        >
-          {bookings.length === 0 ? (
-            <div className="p-12 text-center text-muted-foreground">
-              {t('admin.noBookings')}
+          {/* Bookings Tab */}
+          <TabsContent value="bookings" className="space-y-6">
+            {/* Refresh Button */}
+            <div className="flex justify-end">
+              <Button onClick={fetchBookings} variant="outline" className="gap-2">
+                <RefreshCw className="w-4 h-4" />
+                {language === 'ar' ? 'تحديث' : 'Refresh'}
+              </Button>
             </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>{t('booking.form.name')}</TableHead>
-                    <TableHead>{t('booking.form.email')}</TableHead>
-                    <TableHead>{t('booking.form.phone')}</TableHead>
-                    <TableHead>{t('booking.form.service')}</TableHead>
-                    <TableHead>{t('booking.form.date')}</TableHead>
-                    <TableHead>{t('booking.form.time')}</TableHead>
-                    <TableHead>{language === 'ar' ? 'الحالة' : 'Status'}</TableHead>
-                    <TableHead>{t('admin.actions')}</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {bookings.map((booking) => {
-                    const StatusIcon = statusConfig[booking.status].icon;
-                    return (
-                      <TableRow key={booking.id}>
-                        <TableCell className="font-medium">{booking.full_name}</TableCell>
-                        <TableCell>{booking.email}</TableCell>
-                        <TableCell dir="ltr">{booking.phone}</TableCell>
-                        <TableCell>{getServiceLabel(booking.service_type)}</TableCell>
-                        <TableCell>{new Date(booking.preferred_date).toLocaleDateString()}</TableCell>
-                        <TableCell>{booking.preferred_time}</TableCell>
-                        <TableCell>
-                          <Select
-                            value={booking.status}
-                            onValueChange={(value: BookingStatus) => updateStatus(booking.id, value)}
-                            disabled={updating === booking.id}
-                          >
-                            <SelectTrigger className="w-[140px]">
-                              {updating === booking.id ? (
-                                <Loader2 className="w-4 h-4 animate-spin" />
-                              ) : (
-                                <Badge variant="outline" className={statusConfig[booking.status].color}>
-                                  <StatusIcon className="w-3 h-3 mr-1" />
-                                  {t(`admin.status.${booking.status}`)}
-                                </Badge>
-                              )}
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="pending">
-                                <div className="flex items-center gap-2">
-                                  <Clock className="w-4 h-4 text-yellow-600" />
-                                  {t('admin.status.pending')}
-                                </div>
-                              </SelectItem>
-                              <SelectItem value="approved">
-                                <div className="flex items-center gap-2">
-                                  <CheckCircle className="w-4 h-4 text-green-600" />
-                                  {t('admin.status.approved')}
-                                </div>
-                              </SelectItem>
-                              <SelectItem value="rejected">
-                                <div className="flex items-center gap-2">
-                                  <XCircle className="w-4 h-4 text-red-600" />
-                                  {t('admin.status.rejected')}
-                                </div>
-                              </SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </TableCell>
-                        <TableCell>
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive">
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>
-                                  {language === 'ar' ? 'هل أنت متأكد؟' : 'Are you sure?'}
-                                </AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  {language === 'ar' 
-                                    ? 'سيتم حذف هذا الحجز نهائياً ولا يمكن استعادته.'
-                                    : 'This action cannot be undone. This will permanently delete the booking.'}
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel>
-                                  {language === 'ar' ? 'إلغاء' : 'Cancel'}
-                                </AlertDialogCancel>
-                                <AlertDialogAction
-                                  onClick={() => deleteBooking(booking.id)}
-                                  className="bg-destructive hover:bg-destructive/90"
-                                >
-                                  {t('admin.delete')}
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
-                        </TableCell>
+
+            {/* Stats */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="grid grid-cols-2 md:grid-cols-4 gap-4"
+            >
+              <div className="bg-primary/10 text-primary rounded-xl p-4 border border-primary/20">
+                <div className="text-2xl font-bold">{bookings.length}</div>
+                <div className="text-sm opacity-80">{language === 'ar' ? 'الكل' : 'Total'}</div>
+              </div>
+              <div className="bg-accent/20 text-accent-foreground rounded-xl p-4 border border-accent/30">
+                <div className="text-2xl font-bold">{bookings.filter(b => b.status === 'pending').length}</div>
+                <div className="text-sm opacity-80">{t('admin.status.pending')}</div>
+              </div>
+              <div className="bg-secondary/20 text-secondary-foreground rounded-xl p-4 border border-secondary/30">
+                <div className="text-2xl font-bold">{bookings.filter(b => b.status === 'approved').length}</div>
+                <div className="text-sm opacity-80">{t('admin.status.approved')}</div>
+              </div>
+              <div className="bg-destructive/10 text-destructive rounded-xl p-4 border border-destructive/20">
+                <div className="text-2xl font-bold">{bookings.filter(b => b.status === 'rejected').length}</div>
+                <div className="text-sm opacity-80">{t('admin.status.rejected')}</div>
+              </div>
+            </motion.div>
+
+            {/* Table */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="bg-card border border-border rounded-xl overflow-hidden"
+            >
+              {bookings.length === 0 ? (
+                <div className="p-12 text-center text-muted-foreground">
+                  {t('admin.noBookings')}
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>{t('booking.form.name')}</TableHead>
+                        <TableHead>{t('booking.form.email')}</TableHead>
+                        <TableHead>{t('booking.form.phone')}</TableHead>
+                        <TableHead>{t('booking.form.service')}</TableHead>
+                        <TableHead>{t('booking.form.date')}</TableHead>
+                        <TableHead>{t('booking.form.time')}</TableHead>
+                        <TableHead>{language === 'ar' ? 'الحالة' : 'Status'}</TableHead>
+                        <TableHead>{t('admin.actions')}</TableHead>
                       </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </div>
-          )}
-        </motion.div>
+                    </TableHeader>
+                    <TableBody>
+                      {bookings.map((booking) => {
+                        const StatusIcon = statusConfig[booking.status].icon;
+                        return (
+                          <TableRow key={booking.id}>
+                            <TableCell className="font-medium">{booking.full_name}</TableCell>
+                            <TableCell>{booking.email}</TableCell>
+                            <TableCell dir="ltr">{booking.phone}</TableCell>
+                            <TableCell>{getServiceLabel(booking.service_type)}</TableCell>
+                            <TableCell>{new Date(booking.preferred_date).toLocaleDateString()}</TableCell>
+                            <TableCell>{booking.preferred_time}</TableCell>
+                            <TableCell>
+                              <Select
+                                value={booking.status}
+                                onValueChange={(value: BookingStatus) => updateStatus(booking.id, value)}
+                                disabled={updating === booking.id}
+                              >
+                                <SelectTrigger className="w-[140px]">
+                                  {updating === booking.id ? (
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                  ) : (
+                                    <Badge variant="outline" className={statusConfig[booking.status].color}>
+                                      <StatusIcon className="w-3 h-3 mr-1" />
+                                      {t(`admin.status.${booking.status}`)}
+                                    </Badge>
+                                  )}
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="pending">
+                                    <div className="flex items-center gap-2">
+                                      <Clock className="w-4 h-4 text-yellow-600" />
+                                      {t('admin.status.pending')}
+                                    </div>
+                                  </SelectItem>
+                                  <SelectItem value="approved">
+                                    <div className="flex items-center gap-2">
+                                      <CheckCircle className="w-4 h-4 text-green-600" />
+                                      {t('admin.status.approved')}
+                                    </div>
+                                  </SelectItem>
+                                  <SelectItem value="rejected">
+                                    <div className="flex items-center gap-2">
+                                      <XCircle className="w-4 h-4 text-red-600" />
+                                      {t('admin.status.rejected')}
+                                    </div>
+                                  </SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </TableCell>
+                            <TableCell>
+                              <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                  <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive">
+                                    <Trash2 className="w-4 h-4" />
+                                  </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                      {language === 'ar' ? 'هل أنت متأكد؟' : 'Are you sure?'}
+                                    </AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      {language === 'ar' 
+                                        ? 'سيتم حذف هذا الحجز نهائياً ولا يمكن استعادته.'
+                                        : 'This action cannot be undone. This will permanently delete the booking.'}
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>
+                                      {language === 'ar' ? 'إلغاء' : 'Cancel'}
+                                    </AlertDialogCancel>
+                                    <AlertDialogAction
+                                      onClick={() => deleteBooking(booking.id)}
+                                      className="bg-destructive hover:bg-destructive/90"
+                                    >
+                                      {t('admin.delete')}
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
+            </motion.div>
+          </TabsContent>
+
+          {/* Portfolio Tab */}
+          <TabsContent value="portfolio">
+            <PortfolioManagement />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

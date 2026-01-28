@@ -54,6 +54,21 @@ const translations: Record<Language, Record<string, string>> = {
     'portfolio.subtitle': 'Recent Projects',
     'portfolio.viewProject': 'View Project',
     
+    // Right Choice Section
+    'rightChoice.badge': 'Why Choose Us',
+    'rightChoice.title': 'The Right Choice',
+    'rightChoice.subtitle': "Partner with a team that's committed to your success. Here's what sets us apart.",
+    'rightChoice.experience.title': '3+ Years of Experience',
+    'rightChoice.experience.desc': 'Battle-tested solutions from years of solving complex problems across various industries.',
+    'rightChoice.team.title': 'Professional Team',
+    'rightChoice.team.desc': 'Skilled developers, designers, and project managers dedicated to your success.',
+    'rightChoice.quality.title': 'High-Quality Delivery',
+    'rightChoice.quality.desc': 'We never compromise on quality. Every project meets the highest standards.',
+    'rightChoice.client.title': 'Client-Focused Approach',
+    'rightChoice.client.desc': 'Your goals are our priority. We work closely with you at every step.',
+    'rightChoice.whatYouGet': 'What You Get',
+    'rightChoice.cta': 'Start Your Project',
+    
     // Booking
     'booking.title': 'Book a Consultation',
     'booking.subtitle': 'Let\'s discuss your project',
@@ -78,6 +93,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Admin
     'admin.title': 'Admin Dashboard',
     'admin.bookings': 'Booking Requests',
+    'admin.portfolio': 'Portfolio Management',
     'admin.noBookings': 'No bookings found.',
     'admin.status.pending': 'Pending',
     'admin.status.approved': 'Approved',
@@ -140,6 +156,21 @@ const translations: Record<Language, Record<string, string>> = {
     'portfolio.subtitle': 'مشاريع حديثة',
     'portfolio.viewProject': 'عرض المشروع',
     
+    // Right Choice Section
+    'rightChoice.badge': 'لماذا نحن',
+    'rightChoice.title': 'الخيار الصحيح',
+    'rightChoice.subtitle': 'شارك فريقًا ملتزمًا بنجاحك. إليك ما يميزنا.',
+    'rightChoice.experience.title': '+3 سنوات من الخبرة',
+    'rightChoice.experience.desc': 'حلول مجربة من سنوات حل المشكلات المعقدة عبر مختلف الصناعات.',
+    'rightChoice.team.title': 'فريق محترف',
+    'rightChoice.team.desc': 'مطورون ومصممون ومديرو مشاريع ماهرون ملتزمون بنجاحك.',
+    'rightChoice.quality.title': 'تسليم عالي الجودة',
+    'rightChoice.quality.desc': 'لا نساوم أبدًا على الجودة. كل مشروع يلبي أعلى المعايير.',
+    'rightChoice.client.title': 'نهج يركز على العميل',
+    'rightChoice.client.desc': 'أهدافك هي أولويتنا. نعمل معك عن كثب في كل خطوة.',
+    'rightChoice.whatYouGet': 'ما تحصل عليه',
+    'rightChoice.cta': 'ابدأ مشروعك',
+    
     // Booking
     'booking.title': 'احجز استشارة',
     'booking.subtitle': 'دعنا نناقش مشروعك',
@@ -164,6 +195,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Admin
     'admin.title': 'لوحة التحكم',
     'admin.bookings': 'طلبات الحجز',
+    'admin.portfolio': 'إدارة المحفظة',
     'admin.noBookings': 'لا توجد حجوزات.',
     'admin.status.pending': 'قيد الانتظار',
     'admin.status.approved': 'مقبول',
