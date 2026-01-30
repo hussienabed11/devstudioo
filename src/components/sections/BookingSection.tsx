@@ -10,6 +10,35 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { useContactInfo } from '@/hooks/useContactInfo';
+
+function ContactInfoDisplay() {
+  const { language, dir } = useLanguage();
+  const { contactInfo } = useContactInfo();
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-lg bg-gradient-brand flex items-center justify-center shrink-0">
+          <Mail className="w-6 h-6 text-primary-foreground" />
+        </div>
+        <div>
+          <div className="text-sm text-muted-foreground">{language === 'ar' ? 'البريد الإلكتروني' : 'Email'}</div>
+          <div className="font-medium">{contactInfo?.email || 'info@devstudio.com'}</div>
+        </div>
+      </div>
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-lg bg-gradient-brand flex items-center justify-center shrink-0">
+          <Phone className="w-6 h-6 text-primary-foreground" />
+        </div>
+        <div>
+          <div className="text-sm text-muted-foreground">{language === 'ar' ? 'الهاتف' : 'Phone'}</div>
+          <div className="font-medium" dir="ltr">{contactInfo?.phone || '+1 (555) 123-4567'}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const services = [
   { value: 'uiux', labelEn: 'UI/UX Design', labelAr: 'تصميم واجهات المستخدم' },
@@ -106,27 +135,8 @@ export default function BookingSection() {
                 : 'Book a free consultation with our team to discuss your project and get a customized action plan.'}
             </p>
 
-            {/* Contact Info */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-lg bg-gradient-brand flex items-center justify-center shrink-0">
-                  <Mail className="w-6 h-6 text-primary-foreground" />
-                </div>
-                <div>
-                  <div className="text-sm text-muted-foreground">{language === 'ar' ? 'البريد الإلكتروني' : 'Email'}</div>
-                  <div className="font-medium">info@devstudio.com</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-lg bg-gradient-brand flex items-center justify-center shrink-0">
-                  <Phone className="w-6 h-6 text-primary-foreground" />
-                </div>
-                <div>
-                  <div className="text-sm text-muted-foreground">{language === 'ar' ? 'الهاتف' : 'Phone'}</div>
-                  <div className="font-medium" dir="ltr">+1 (555) 123-4567</div>
-                </div>
-              </div>
-            </div>
+            {/* Contact Info - Will be updated to use dynamic data */}
+            <ContactInfoDisplay />
           </motion.div>
 
           {/* Right Side - Form */}

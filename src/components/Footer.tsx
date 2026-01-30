@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
+import { Mail, Phone, MapPin } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useContactInfo } from '@/hooks/useContactInfo';
 
 export default function Footer() {
   const { t, language, dir } = useLanguage();
+  const { contactInfo } = useContactInfo();
   const year = new Date().getFullYear();
 
   const quickLinks = [
@@ -35,23 +37,13 @@ export default function Footer() {
               <div className="w-10 h-10 rounded-lg bg-gradient-brand flex items-center justify-center">
                 <span className="text-primary-foreground font-bold text-xl">D</span>
               </div>
-              <span className="font-bold text-xl">DevStudio</span>
+              <span className={`font-bold text-xl ${dir === 'rtl' ? 'font-arabic-heading text-foreground/90' : ''}`}>
+                {dir === 'rtl' ? 'ديف ستوديو' : 'DevStudio'}
+              </span>
             </Link>
-            <p className={`text-muted-foreground leading-relaxed mb-6 ${dir === 'rtl' ? 'font-arabic' : ''}`}>
+            <p className={`text-muted-foreground leading-relaxed ${dir === 'rtl' ? 'font-arabic' : ''}`}>
               {t('footer.description')}
             </p>
-            {/* Social Links */}
-            <div className="flex items-center gap-3">
-              {[Facebook, Twitter, Linkedin, Instagram].map((Icon, index) => (
-                <a
-                  key={index}
-                  href="#"
-                  className="w-10 h-10 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-colors"
-                >
-                  <Icon className="w-5 h-5" />
-                </a>
-              ))}
-            </div>
           </div>
 
           {/* Quick Links */}
@@ -116,16 +108,19 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <Mail className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                <span className="text-muted-foreground">info@devstudio.com</span>
+                <span className="text-muted-foreground">{contactInfo?.email || 'info@devstudio.com'}</span>
               </li>
               <li className="flex items-start gap-3">
                 <Phone className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                <span className="text-muted-foreground" dir="ltr">+1 (555) 123-4567</span>
+                <span className="text-muted-foreground" dir="ltr">{contactInfo?.phone || '+1 (555) 123-4567'}</span>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-primary mt-0.5 shrink-0" />
                 <span className={`text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
-                  {language === 'ar' ? 'دبي، الإمارات العربية المتحدة' : 'Dubai, United Arab Emirates'}
+                  {language === 'ar' 
+                    ? (contactInfo?.address_ar || 'دبي، الإمارات العربية المتحدة')
+                    : (contactInfo?.address_en || 'Dubai, United Arab Emirates')
+                  }
                 </span>
               </li>
             </ul>

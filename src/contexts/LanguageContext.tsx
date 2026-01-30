@@ -69,6 +69,26 @@ const translations: Record<Language, Record<string, string>> = {
     'rightChoice.whatYouGet': 'What You Get',
     'rightChoice.cta': 'Start Your Project',
     
+    // Packages
+    'packages.badge': 'Our Packages',
+    'packages.title': 'Our Website Packages',
+    'packages.subtitle': 'Choose the right solution for your business stage. Flexible, scalable, and built for growth.',
+    'packages.note': 'Final pricing depends on project scope, selected features, and customization requirements.',
+    
+    // How We Work
+    'howWeWork.badge': 'Our Process',
+    'howWeWork.title': 'How We Work',
+    'howWeWork.subtitle': 'Our step-by-step approach ensures high-quality delivery and excellent support at every stage.',
+    'howWeWork.step1.title': 'Discovery & Requirements',
+    'howWeWork.step1.desc': 'Understand business goals and technical needs.',
+    'howWeWork.step2.title': 'Design & Approval',
+    'howWeWork.step2.desc': 'Craft tailored designs and get client feedback.',
+    'howWeWork.step3.title': 'Development & Testing',
+    'howWeWork.step3.desc': 'Build with clean scalable code, thoroughly tested.',
+    'howWeWork.step4.title': 'Launch & Support',
+    'howWeWork.step4.desc': 'Deploy project and provide continuous support.',
+    'howWeWork.support': 'Strong support team available at every stage',
+    
     // Booking
     'booking.title': 'Book a Consultation',
     'booking.subtitle': 'Let\'s discuss your project',
@@ -92,8 +112,11 @@ const translations: Record<Language, Record<string, string>> = {
     
     // Admin
     'admin.title': 'Admin Dashboard',
-    'admin.bookings': 'Booking Requests',
-    'admin.portfolio': 'Portfolio Management',
+    'admin.bookings': 'Bookings',
+    'admin.portfolio': 'Portfolio',
+    'admin.services': 'Services',
+    'admin.packages': 'Packages',
+    'admin.contact': 'Contact',
     'admin.noBookings': 'No bookings found.',
     'admin.status.pending': 'Pending',
     'admin.status.approved': 'Approved',
@@ -171,6 +194,26 @@ const translations: Record<Language, Record<string, string>> = {
     'rightChoice.whatYouGet': 'ما تحصل عليه',
     'rightChoice.cta': 'ابدأ مشروعك',
     
+    // Packages
+    'packages.badge': 'باقاتنا',
+    'packages.title': 'باقات المواقع',
+    'packages.subtitle': 'اختر الحل المناسب لمرحلة عملك. مرنة، قابلة للتوسع، ومصممة للنمو.',
+    'packages.note': 'السعر النهائي يعتمد على نطاق المشروع والميزات المختارة ومتطلبات التخصيص.',
+    
+    // How We Work
+    'howWeWork.badge': 'طريقة عملنا',
+    'howWeWork.title': 'كيف نعمل',
+    'howWeWork.subtitle': 'نهجنا خطوة بخطوة يضمن تسليماً عالي الجودة ودعماً ممتازاً في كل مرحلة.',
+    'howWeWork.step1.title': 'الاكتشاف والمتطلبات',
+    'howWeWork.step1.desc': 'فهم أهداف العمل والاحتياجات التقنية.',
+    'howWeWork.step2.title': 'التصميم والموافقة',
+    'howWeWork.step2.desc': 'صياغة تصاميم مخصصة والحصول على ملاحظات العميل.',
+    'howWeWork.step3.title': 'التطوير والاختبار',
+    'howWeWork.step3.desc': 'بناء بكود نظيف قابل للتوسع، مختبر بدقة.',
+    'howWeWork.step4.title': 'الإطلاق والدعم',
+    'howWeWork.step4.desc': 'نشر المشروع وتقديم الدعم المستمر.',
+    'howWeWork.support': 'فريق دعم قوي متاح في كل مرحلة',
+    
     // Booking
     'booking.title': 'احجز استشارة',
     'booking.subtitle': 'دعنا نناقش مشروعك',
@@ -194,8 +237,11 @@ const translations: Record<Language, Record<string, string>> = {
     
     // Admin
     'admin.title': 'لوحة التحكم',
-    'admin.bookings': 'طلبات الحجز',
-    'admin.portfolio': 'إدارة المحفظة',
+    'admin.bookings': 'الحجوزات',
+    'admin.portfolio': 'المحفظة',
+    'admin.services': 'الخدمات',
+    'admin.packages': 'الباقات',
+    'admin.contact': 'التواصل',
     'admin.noBookings': 'لا توجد حجوزات.',
     'admin.status.pending': 'قيد الانتظار',
     'admin.status.approved': 'مقبول',
