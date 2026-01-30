@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Loader2, Trash2, CheckCircle, XCircle, Clock, RefreshCw, Calendar, Image } from 'lucide-react';
+import { ArrowLeft, Loader2, Trash2, CheckCircle, XCircle, Clock, RefreshCw, Calendar, Image, Settings, Package, Phone } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -36,6 +36,9 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import PortfolioManagement from '@/components/admin/PortfolioManagement';
+import ServicesManagement from '@/components/admin/ServicesManagement';
+import ContactInfoManagement from '@/components/admin/ContactInfoManagement';
+import PackagesManagement from '@/components/admin/PackagesManagement';
 
 type BookingStatus = 'pending' | 'approved' | 'rejected';
 
@@ -185,14 +188,26 @@ export default function Admin() {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-md grid-cols-2">
+          <TabsList className="grid w-full max-w-2xl grid-cols-5">
             <TabsTrigger value="bookings" className="gap-2">
               <Calendar className="w-4 h-4" />
-              {t('admin.bookings')}
+              <span className="hidden sm:inline">{t('admin.bookings')}</span>
             </TabsTrigger>
             <TabsTrigger value="portfolio" className="gap-2">
               <Image className="w-4 h-4" />
-              {t('admin.portfolio')}
+              <span className="hidden sm:inline">{t('admin.portfolio')}</span>
+            </TabsTrigger>
+            <TabsTrigger value="services" className="gap-2">
+              <Settings className="w-4 h-4" />
+              <span className="hidden sm:inline">{t('admin.services')}</span>
+            </TabsTrigger>
+            <TabsTrigger value="packages" className="gap-2">
+              <Package className="w-4 h-4" />
+              <span className="hidden sm:inline">{t('admin.packages')}</span>
+            </TabsTrigger>
+            <TabsTrigger value="contact" className="gap-2">
+              <Phone className="w-4 h-4" />
+              <span className="hidden sm:inline">{t('admin.contact')}</span>
             </TabsTrigger>
           </TabsList>
 
@@ -351,6 +366,21 @@ export default function Admin() {
           {/* Portfolio Tab */}
           <TabsContent value="portfolio">
             <PortfolioManagement />
+          </TabsContent>
+
+          {/* Services Tab */}
+          <TabsContent value="services">
+            <ServicesManagement />
+          </TabsContent>
+
+          {/* Packages Tab */}
+          <TabsContent value="packages">
+            <PackagesManagement />
+          </TabsContent>
+
+          {/* Contact Tab */}
+          <TabsContent value="contact">
+            <ContactInfoManagement />
           </TabsContent>
         </Tabs>
       </div>

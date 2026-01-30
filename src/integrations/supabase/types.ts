@@ -56,6 +56,105 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_info: {
+        Row: {
+          address_ar: string | null
+          address_en: string | null
+          created_at: string
+          email: string
+          id: string
+          phone: string
+          updated_at: string
+          website_url: string | null
+          whatsapp: string | null
+        }
+        Insert: {
+          address_ar?: string | null
+          address_en?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          phone?: string
+          updated_at?: string
+          website_url?: string | null
+          whatsapp?: string | null
+        }
+        Update: {
+          address_ar?: string | null
+          address_en?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          phone?: string
+          updated_at?: string
+          website_url?: string | null
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
+      packages: {
+        Row: {
+          created_at: string
+          cta_link: string | null
+          cta_text_ar: string | null
+          cta_text_en: string | null
+          description_ar: string
+          description_en: string
+          display_order: number | null
+          features_ar: string[]
+          features_en: string[]
+          id: string
+          is_featured: boolean | null
+          marketing_text_ar: string | null
+          marketing_text_en: string | null
+          name_ar: string
+          name_en: string
+          starting_price: string
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          cta_link?: string | null
+          cta_text_ar?: string | null
+          cta_text_en?: string | null
+          description_ar: string
+          description_en: string
+          display_order?: number | null
+          features_ar?: string[]
+          features_en?: string[]
+          id?: string
+          is_featured?: boolean | null
+          marketing_text_ar?: string | null
+          marketing_text_en?: string | null
+          name_ar: string
+          name_en: string
+          starting_price: string
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          cta_link?: string | null
+          cta_text_ar?: string | null
+          cta_text_en?: string | null
+          description_ar?: string
+          description_en?: string
+          display_order?: number | null
+          features_ar?: string[]
+          features_en?: string[]
+          id?: string
+          is_featured?: boolean | null
+          marketing_text_ar?: string | null
+          marketing_text_en?: string | null
+          name_ar?: string
+          name_en?: string
+          starting_price?: string
+          status?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       portfolio_projects: {
         Row: {
           created_at: string
@@ -92,6 +191,45 @@ export type Database = {
           image_url?: string
           project_link?: string
           status?: string
+          title_ar?: string
+          title_en?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      services: {
+        Row: {
+          created_at: string
+          description_ar: string
+          description_en: string
+          display_order: number | null
+          icon_name: string | null
+          id: string
+          status: string | null
+          title_ar: string
+          title_en: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description_ar: string
+          description_en: string
+          display_order?: number | null
+          icon_name?: string | null
+          id?: string
+          status?: string | null
+          title_ar: string
+          title_en: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description_ar?: string
+          description_en?: string
+          display_order?: number | null
+          icon_name?: string | null
+          id?: string
+          status?: string | null
           title_ar?: string
           title_en?: string
           updated_at?: string

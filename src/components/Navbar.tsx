@@ -65,7 +65,9 @@ export default function Navbar() {
             <div className="w-10 h-10 rounded-lg bg-gradient-brand flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-xl">D</span>
             </div>
-            <span className="font-bold text-xl text-foreground">DevStudio</span>
+            <span className={`font-bold text-xl text-foreground ${dir === 'rtl' ? 'font-arabic-heading text-foreground/90' : ''}`}>
+              {dir === 'rtl' ? 'ديف ستوديو' : 'DevStudio'}
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
