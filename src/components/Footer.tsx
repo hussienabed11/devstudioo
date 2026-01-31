@@ -38,7 +38,7 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
                 <span className="text-primary-foreground font-bold text-xl">D</span>
               </div>
               <span className={`font-bold text-xl ${dir === 'rtl' ? 'font-arabic-heading text-foreground/90' : ''}`}>
-                {dir === 'rtl' ? 'ديف ستوديو' : 'DevStudio'}
+                {dir === 'rtl' ? 'Vertex Solutions ' : 'Vertex Solutions'}
               </span>
             </Link>
             <p className={`text-muted-foreground leading-relaxed ${dir === 'rtl' ? 'font-arabic' : ''}`}>
@@ -127,20 +127,30 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className={`text-sm text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
-            © {year} DevStudio. {t('footer.rights')}
-          </p>
-          <div className="flex items-center gap-6 text-sm text-muted-foreground">
-            <a href="#" className="hover:text-primary transition-colors">
-              {language === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy'}
-            </a>
-            <a href="#" className="hover:text-primary transition-colors">
-              {language === 'ar' ? 'الشروط والأحكام' : 'Terms of Service'}
-            </a>
-          </div>
-        </div>
+{/* Bottom Bar */}
+<div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
+  <p className={`text-sm text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
+    © {year} Vertex Solutions. {t('footer.rights')}
+  </p>
+  <div className="flex items-center gap-6 text-sm text-muted-foreground">
+    <a href="#" className="hover:text-primary transition-colors">
+      {language === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy'}
+    </a>
+    <a href="#" className="hover:text-primary transition-colors">
+      {language === 'ar' ? 'الشروط والأحكام' : 'Terms of Service'}
+    </a>
+  </div>
+
+  {/* Created by Hussien Abed */}
+  <p className="mt-4 text-xs text-muted-foreground italic w-full text-center">
+    {language === 'ar' ? (
+      <>تم الإنشاء بواسطة <span className="text-primary">حسين عابد</span></>
+    ) : (
+      <>Created by <span className="text-primary">Hussien Abed</span></>
+    )}
+  </p>
+</div>
+
       </div>
     </footer>
   );

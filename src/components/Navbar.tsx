@@ -32,6 +32,7 @@ export default function Navbar() {
     { href: '/#about', label: t('nav.about') },
     { href: '/#services', label: t('nav.services') },
     { href: '/#portfolio', label: t('nav.portfolio') },
+    { href: '/#packages', label: t('packages') },
     { href: '/#booking', label: t('nav.booking') },
   ];
 
@@ -40,14 +41,16 @@ export default function Navbar() {
   };
 
   const handleNavClick = (href: string) => {
-    if (href.startsWith('/#')) {
-      const elementId = href.replace('/#', '');
+    if (href.includes('#')) {
+      const elementId = href.split('#')[1];
       const element = document.getElementById(elementId);
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100); // يعطي فرصة للـ mobile menu يغلق قبل الـ scroll
       }
+      setIsOpen(false);
     }
-    setIsOpen(false);
   };
 
   return (
@@ -63,10 +66,10 @@ export default function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <div className="w-10 h-10 rounded-lg bg-gradient-brand flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-xl">D</span>
+              <span className="text-primary-foreground font-bold text-xl">v</span>
             </div>
             <span className={`font-bold text-xl text-foreground ${dir === 'rtl' ? 'font-arabic-heading text-foreground/90' : ''}`}>
-              {dir === 'rtl' ? 'ديف ستوديو' : 'DevStudio'}
+              {dir === 'rtl' ? 'Vertex Solutions' : 'Vertex Solutions'}
             </span>
           </Link>
 
@@ -77,7 +80,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={(e) => {
-                  if (link.href.startsWith('/#')) {
+                  if (link.href.includes('#')) {
                     e.preventDefault();
                     handleNavClick(link.href);
                   }
@@ -184,7 +187,7 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={(e) => {
-                    if (link.href.startsWith('/#')) {
+                    if (link.href.includes('#')) {
                       e.preventDefault();
                       handleNavClick(link.href);
                     }
