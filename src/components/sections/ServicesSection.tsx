@@ -78,6 +78,25 @@ export default function ServicesSection() {
     );
   }
 
+  // Empty state - show message instead of nothing
+  if (!services || services.length === 0) {
+    return (
+      <section id="services" className="py-20 md:py-32 bg-muted/30">
+        <div className="container mx-auto px-4 text-center">
+          <span className="inline-block px-4 py-1.5 rounded-full text-sm font-medium bg-primary/10 text-primary mb-4">
+            {t('services.subtitle')}
+          </span>
+          <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 ${dir === 'rtl' ? 'font-arabic-heading' : ''}`}>
+            {t('services.title')}
+          </h2>
+          <p className={`text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
+            {language === 'ar' ? 'لا توجد خدمات متاحة حالياً' : 'No services available at the moment'}
+          </p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section id="services" className="py-20 md:py-32 bg-muted/30 relative overflow-hidden">
       {/* Background Pattern */}

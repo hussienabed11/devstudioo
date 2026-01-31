@@ -64,8 +64,27 @@ export default function PackagesSection() {
 
   if (loading) {
     return (
-      <section className="py-20 md:py-32 flex items-center justify-center">
+      <section id="packages" className="py-20 md:py-32 flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </section>
+    );
+  }
+
+  // Empty state - show message instead of nothing
+  if (!packages || packages.length === 0) {
+    return (
+      <section id="packages" className="py-20 md:py-32">
+        <div className="container mx-auto px-4 text-center">
+          <span className="inline-block px-4 py-1.5 rounded-full text-sm font-medium bg-primary/10 text-primary mb-4">
+            {t('packages.badge')}
+          </span>
+          <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 ${dir === 'rtl' ? 'font-arabic-heading' : ''}`}>
+            {t('packages.title')}
+          </h2>
+          <p className={`text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
+            {language === 'ar' ? 'لا توجد باقات متاحة حالياً' : 'No packages available at the moment'}
+          </p>
+        </div>
       </section>
     );
   }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Mail, Lock, Loader2, ArrowLeft, AlertCircle } from 'lucide-react';
+import { Mail, Lock, Loader2, ArrowLeft, AlertCircle, User } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -10,7 +10,13 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
 
-const authSchema = z.object({
+const loginSchema = z.object({
+  email: z.string().email('Invalid email address').max(255),
+  password: z.string().min(6, 'Password must be at least 6 characters').max(128),
+});
+
+const signupSchema = z.object({
+  fullName: z.string().min(2, 'Name must be at least 2 characters').max(100),
   email: z.string().email('Invalid email address').max(255),
   password: z.string().min(6, 'Password must be at least 6 characters').max(128),
 });
@@ -25,7 +31,8 @@ export default function Auth() {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [fullName, setFullName] = useState('');
+  const [errors, setErrors] = useState<{ fullName?: string; email?: string; password?: string }>({});
   const [verificationSent, setVerificationSent] = useState(false);
 
   useEffect(() => {
@@ -69,16 +76,30 @@ export default function Auth() {
       return;
     }
 
-    // Validate input
-    const result = authSchema.safeParse({ email, password });
-    if (!result.success) {
-      const fieldErrors: { email?: string; password?: string } = {};
-      result.error.errors.forEach((err) => {
-        if (err.path[0] === 'email') fieldErrors.email = err.message;
-        if (err.path[0] === 'password') fieldErrors.password = err.message;
-      });
-      setErrors(fieldErrors);
-      return;
+    // Validate input based on mode
+    if (isLogin) {
+      const result = loginSchema.safeParse({ email, password });
+      if (!result.success) {
+        const fieldErrors: { fullName?: string; email?: string; password?: string } = {};
+        result.error.errors.forEach((err) => {
+          if (err.path[0] === 'email') fieldErrors.email = err.message;
+          if (err.path[0] === 'password') fieldErrors.password = err.message;
+        });
+        setErrors(fieldErrors);
+        return;
+      }
+    } else {
+      const result = signupSchema.safeParse({ fullName, email, password });
+      if (!result.success) {
+        const fieldErrors: { fullName?: string; email?: string; password?: string } = {};
+        result.error.errors.forEach((err) => {
+          if (err.path[0] === 'fullName') fieldErrors.fullName = err.message;
+          if (err.path[0] === 'email') fieldErrors.email = err.message;
+          if (err.path[0] === 'password') fieldErrors.password = err.message;
+        });
+        setErrors(fieldErrors);
+        return;
+      }
     }
 
     setIsLoading(true);
@@ -121,6 +142,10 @@ export default function Auth() {
           password,
           options: {
             emailRedirectTo: `${window.location.origin}/`,
+            data: {
+              full_name: fullName,
+              name: fullName,
+            },
           },
         });
 
@@ -242,6 +267,29 @@ export default function Auth() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Full Name - Only for signup */}
+            {!isLogin && !isForgotPassword && (
+              <div className="space-y-2">
+                <label className={`text-sm font-medium ${dir === 'rtl' ? 'font-arabic' : ''}`}>
+                  {language === 'ar' ? 'الاسم الكامل' : 'Full Name'}
+                </label>
+                <div className="relative">
+                  <User className={`absolute top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground ${dir === 'rtl' ? 'right-3' : 'left-3'}`} />
+                  <Input
+                    type="text"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    className={`${dir === 'rtl' ? 'pr-10' : 'pl-10'} ${errors.fullName ? 'border-destructive' : ''}`}
+                    placeholder={language === 'ar' ? 'أدخل اسمك الكامل' : 'Enter your full name'}
+                    required
+                  />
+                </div>
+                {errors.fullName && (
+                  <p className="text-sm text-destructive">{errors.fullName}</p>
+                )}
+              </div>
+            )}
+
             <div className="space-y-2">
               <label className={`text-sm font-medium ${dir === 'rtl' ? 'font-arabic' : ''}`}>
                 {t('auth.email')}

@@ -118,9 +118,9 @@
     --sidebar-ring: 199 55% 50%;
   }
 
-  /* RTL support */
+  /* RTL support - Unified Arabic Typography */
   [dir="rtl"] {
-    font-family: 'Amiri', serif;
+    font-family: 'Cairo', 'Almarai', sans-serif;
   }
   
   [dir="rtl"] h1,
@@ -128,8 +128,22 @@
   [dir="rtl"] h3,
   [dir="rtl"] h4,
   [dir="rtl"] h5,
-  [dir="rtl"] h6 {
-    font-family: 'Almarai', sans-serif;
+  [dir="rtl"] h6,
+  [dir="rtl"] .font-arabic-heading {
+    font-family: 'Cairo', 'Almarai', sans-serif;
+    font-weight: 700;
+  }
+  
+  [dir="rtl"] p,
+  [dir="rtl"] span,
+  [dir="rtl"] li,
+  [dir="rtl"] a,
+  [dir="rtl"] label,
+  [dir="rtl"] button,
+  [dir="rtl"] input,
+  [dir="rtl"] textarea,
+  [dir="rtl"] .font-arabic {
+    font-family: 'Cairo', 'Almarai', sans-serif;
   }
   
   [dir="ltr"] {
