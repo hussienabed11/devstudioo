@@ -74,8 +74,8 @@ export default {
       },
       fontFamily: {
         sans: ["Inter", "sans-serif"],
-        arabic: ["Amiri", "serif"],
-        "arabic-heading": ["Almarai", "sans-serif"],
+        arabic: ["Cairo", "Almarai", "sans-serif"],
+        "arabic-heading": ["Cairo", "Almarai", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {

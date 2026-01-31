@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useContactInfo } from '@/hooks/useContactInfo';
 
-export default function Footer() {
+const Footer = forwardRef<HTMLElement>((_, ref) => {
   const { t, language, dir } = useLanguage();
   const { contactInfo } = useContactInfo();
   const year = new Date().getFullYear();
@@ -144,4 +144,8 @@ export default function Footer() {
       </div>
     </footer>
   );
-}
+});
+
+Footer.displayName = 'Footer';
+
+export default Footer;
