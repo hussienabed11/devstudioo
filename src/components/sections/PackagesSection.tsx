@@ -101,7 +101,7 @@ export default function PackagesSection() {
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
@@ -122,7 +122,7 @@ export default function PackagesSection() {
             <motion.div
               key={pkg.id}
               initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className={`relative group bg-card border rounded-2xl p-6 md:p-8 hover:shadow-xl transition-all duration-300 ${
                 pkg.is_featured 
@@ -196,7 +196,7 @@ export default function PackagesSection() {
         {/* Note */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
           className={`text-center text-sm text-muted-foreground mt-8 ${dir === 'rtl' ? 'font-arabic' : ''}`}
         >
