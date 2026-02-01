@@ -10,9 +10,10 @@ import { Button } from '@/components/ui/button';
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+
   const { language, setLanguage, t, dir } = useLanguage();
   const { theme, toggleTheme } = useTheme();
-  const { user, isAdmin, signOut } = useAuth();
+  const { isAdmin } = useAuth();
   const location = useLocation();
 
   useEffect(() => {
@@ -40,14 +41,14 @@ export default function Navbar() {
     setLanguage(language === 'en' ? 'ar' : 'en');
   };
 
-  const handleNavClick = (href: string) => {
+  const handleNavClick = (href) => {
     if (href.includes('#')) {
       const elementId = href.split('#')[1];
       const element = document.getElementById(elementId);
       if (element) {
         setTimeout(() => {
           element.scrollIntoView({ behavior: 'smooth' });
-        }, 100); // يعطي فرصة للـ mobile menu يغلق قبل الـ scroll
+        }, 100);
       }
       setIsOpen(false);
     }
@@ -56,9 +57,7 @@ export default function Navbar() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'glass border-b border-border shadow-md'
-          : 'bg-transparent'
+        isScrolled ? 'glass border-b border-border shadow-md' : 'bg-transparent'
       }`}
     >
       <div className="container mx-auto px-4">
@@ -68,8 +67,12 @@ export default function Navbar() {
             <div className="w-10 h-10 rounded-lg bg-gradient-brand flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-xl">v</span>
             </div>
-            <span className={`font-bold text-xl text-foreground ${dir === 'rtl' ? 'font-arabic-heading text-foreground/90' : ''}`}>
-              {dir === 'rtl' ? 'Vertex Solutions' : 'Vertex Solutions'}
+            <span
+              className={`font-bold text-xl text-foreground ${
+                dir === 'rtl' ? 'font-arabic-heading text-foreground/90' : ''
+              }`}
+            >
+              Vertex Solutions
             </span>
           </Link>
 
@@ -91,7 +94,8 @@ export default function Navbar() {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-brand-horizontal transition-all duration-300 group-hover:w-full" />
               </a>
             ))}
-            
+
+            {/* Admin link يظهر للأدمن فقط */}
             {isAdmin && (
               <Link
                 to="/admin"
@@ -102,70 +106,39 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Desktop Actions */}
+          {/* Actions */}
           <div className="hidden md:flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleLanguage}
-              className="text-foreground/80 hover:text-foreground"
-            >
+            <Button variant="ghost" size="icon" onClick={toggleLanguage}>
               <Globe className="h-5 w-5" />
-              <span className="sr-only">Toggle language</span>
-            </Button>
-            
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleTheme}
-              className="text-foreground/80 hover:text-foreground"
-            >
-              {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
-              <span className="sr-only">Toggle theme</span>
             </Button>
 
-            {user ? (
-              <Button
-                variant="outline"
-                onClick={signOut}
-                className="border-primary/30 hover:border-primary"
-              >
-                {t('nav.logout')}
-              </Button>
-            ) : (
-              <Link to="/auth">
-                <Button variant="gradient" className="bg-gradient-brand hover:opacity-90">
-                  {t('nav.login')}
-                </Button>
-              </Link>
-            )}
+            <Button variant="ghost" size="icon" onClick={toggleTheme}>
+              {theme === 'light' ? (
+                <Moon className="h-5 w-5" />
+              ) : (
+                <Sun className="h-5 w-5" />
+              )}
+            </Button>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Buttons */}
           <div className="flex md:hidden items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleLanguage}
-              className="text-foreground/80"
-            >
+            <Button variant="ghost" size="icon" onClick={toggleLanguage}>
               <Globe className="h-5 w-5" />
             </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleTheme}
-              className="text-foreground/80"
-            >
-              {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+            <Button variant="ghost" size="icon" onClick={toggleTheme}>
+              {theme === 'light' ? (
+                <Moon className="h-5 w-5" />
+              ) : (
+                <Sun className="h-5 w-5" />
+              )}
             </Button>
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setIsOpen(!isOpen)}
-              className="text-foreground"
             >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isOpen ? <X /> : <Menu />}
             </Button>
           </div>
         </div>
@@ -192,38 +165,20 @@ export default function Navbar() {
                       handleNavClick(link.href);
                     }
                   }}
-                  className="block py-2 text-foreground/80 hover:text-foreground transition-colors font-medium"
+                  className="block py-2 text-foreground/80 hover:text-foreground"
                 >
                   {link.label}
                 </a>
               ))}
-              
+
               {isAdmin && (
                 <Link
                   to="/admin"
-                  className="block py-2 text-foreground/80 hover:text-foreground transition-colors font-medium"
+                  className="block py-2 text-foreground/80 hover:text-foreground"
                 >
                   {t('nav.admin')}
                 </Link>
               )}
-              
-              <div className="pt-3 border-t border-border">
-                {user ? (
-                  <Button
-                    variant="outline"
-                    onClick={signOut}
-                    className="w-full"
-                  >
-                    {t('nav.logout')}
-                  </Button>
-                ) : (
-                  <Link to="/auth" className="block">
-                    <Button className="w-full bg-gradient-brand">
-                      {t('nav.login')}
-                    </Button>
-                  </Link>
-                )}
-              </div>
             </div>
           </motion.div>
         )}

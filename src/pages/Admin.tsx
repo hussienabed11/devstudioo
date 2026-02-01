@@ -70,6 +70,16 @@ export default function Admin() {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('bookings');
+const handleLogout = async () => {
+  try {
+    await supabase.auth.signOut();
+    toast.success(language === 'ar' ? 'تم تسجيل الخروج بنجاح' : 'Logged out successfully');
+    navigate('/'); // توجه لصفحة تسجيل الدخول بعد الخروج
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+    toast.error(errorMessage);
+  }
+};
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -184,6 +194,16 @@ export default function Admin() {
               {t('admin.title')}
             </h1>
           </div>
+          <div className="flex items-center gap-2">
+  <Button
+    variant="ghost"
+    onClick={handleLogout}
+    className="mb-2"
+  >
+    {language === 'ar' ? 'تسجيل الخروج' : 'Logout'}
+  </Button>
+</div>
+
         </motion.div>
 
         {/* Tabs */}
