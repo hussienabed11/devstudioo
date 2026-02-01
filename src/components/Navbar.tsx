@@ -65,7 +65,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <div className="w-10 h-10 rounded-lg bg-gradient-brand flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-xl">v</span>
+              <span className="text-primary-foreground font-bold text-xl">VS</span>
             </div>
             <span
               className={`font-bold text-xl text-foreground ${
