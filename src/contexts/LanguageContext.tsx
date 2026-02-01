@@ -141,6 +141,7 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.about': 'من نحن',
     'nav.services': 'خدماتنا',
     'nav.portfolio': 'أعمالنا',
+    "packages": "الباقات",
     'nav.booking': 'احجز الآن',
     'nav.admin': 'لوحة التحكم',
     'nav.login': 'تسجيل الدخول',
