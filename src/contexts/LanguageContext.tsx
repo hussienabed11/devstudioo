@@ -49,7 +49,10 @@ const translations: Record<Language, Record<string, string>> = {
     'services.mobile.description': 'Native and cross-platform mobile apps that deliver exceptional performance.',
     'services.seo.title': 'SEO Optimization',
     'services.seo.description': 'Strategic SEO solutions to boost your online visibility and organic traffic.',
-    
+    'services.hosting.title': 'Hosting & Domain Setup',
+'services.hosting.description': 'Secure hosting setup, domain configuration, and full deployment to ensure your website is live, fast, and reliable.',
+'services.customization.title': 'Website Customization',
+'services.customization.description': 'Enhancing and modifying existing websites to meet your business needs, improve performance, and add new features.',
     // Portfolio
     'portfolio.title': 'Our Portfolio',
     'portfolio.subtitle': 'Recent Projects',
@@ -175,6 +178,11 @@ const translations: Record<Language, Record<string, string>> = {
     'services.mobile.description': 'تطبيقات جوال أصلية ومتعددة المنصات تقدم أداءً استثنائياً.',
     'services.seo.title': 'تحسين محركات البحث',
     'services.seo.description': 'حلول SEO استراتيجية لتعزيز ظهورك على الإنترنت وزيادة الزيارات العضوية.',
+    'services.hosting.title': 'استضافة المواقع و اعداد الدومين',
+    'services.hosting.description': 'إعداد الاستضافة، ربط الدومين، ورفع الموقع بشكل كامل لضمان سرعة وأمان واستقرار الموقع.',
+
+    'services.customization.title': 'تخصيص وتعديل المواقع الحالية',
+    'services.customization.description': 'تعديل وتحسين المواقع الحالية لتلبية متطلبات عملك، تحسين الأداء، وإضافة خصائص جديدة.',
     
     // Portfolio
     'portfolio.title': 'أعمالنا',

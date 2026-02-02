@@ -93,20 +93,22 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
                   {t('services.mobile.title')}
                 </span>
               </li>
-              <li>
-                <span className={`text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
-                  {t('services.seo.title')}
-                </span>
-              </li>
-              <li>
-                <span className={`text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
-                  {t('Hosting & Domain Setup')}
-                </span>
-              </li>
-              <li>
-                <span className={`text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
-                  {t('Website Customization')}
-                </span>
+            <li>
+              <span className={`text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
+                {t('services.seo.title')}
+              </span>
+            </li>
+
+            <li>
+              <span className={`text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
+                {t('services.hosting.title')}
+              </span>
+            </li>
+
+            <li>
+              <span className={`text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
+                {t('services.customization.title')}
+              </span>
               </li>
             </ul>
           </div>
