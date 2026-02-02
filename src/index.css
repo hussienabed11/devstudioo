@@ -264,3 +264,30 @@
   background: hsl(var(--primary) / 0.2);
   color: hsl(var(--foreground));
 }
+.back-to-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px; /* لو RTL خليه left */
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: #111;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 1000;
+}
+
+.back-to-top.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  transform: translateY(-4px);
+}

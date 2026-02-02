@@ -24,7 +24,7 @@ function ContactInfoDisplay() {
         </div>
         <div>
           <div className="text-sm text-muted-foreground">{language === 'ar' ? 'البريد الإلكتروني' : 'Email'}</div>
-          <div className="font-medium">{contactInfo?.email || 'info@devstudio.com'}</div>
+          <div className="font-medium">{contactInfo?.email || 'hussienabed1111@gmail.com'}</div>
         </div>
       </div>
       <div className="flex items-center gap-4">
@@ -33,7 +33,7 @@ function ContactInfoDisplay() {
         </div>
         <div>
           <div className="text-sm text-muted-foreground">{language === 'ar' ? 'الهاتف' : 'Phone'}</div>
-          <div className="font-medium" dir="ltr">{contactInfo?.phone || '+1 (555) 123-4567'}</div>
+          <div className="font-medium" dir="ltr">{contactInfo?.phone || '01017080519'}</div>
         </div>
       </div>
     </div>

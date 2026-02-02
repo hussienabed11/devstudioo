@@ -9,6 +9,7 @@ import HowWeWorkSection from '@/components/sections/HowWeWorkSection';
 import PortfolioSection from '@/components/sections/PortfolioSection';
 import BookingSection from '@/components/sections/BookingSection';
 import Footer from '@/components/Footer';
+import BackToTop from "@/components/BackToTop";
 
 const Index = () => {
   return (
@@ -23,6 +24,7 @@ const Index = () => {
         <PortfolioSection />
         <PackagesSection />
         <BookingSection />
+        <BackToTop />
       </main>
       <Footer />
     </div>

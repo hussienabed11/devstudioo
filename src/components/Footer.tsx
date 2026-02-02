@@ -14,6 +14,7 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
     { href: '/#about', label: t('nav.about') },
     { href: '/#services', label: t('nav.services') },
     { href: '/#portfolio', label: t('nav.portfolio') },
+    { href: '/#packages', label: t('packages') },
     { href: '/#booking', label: t('nav.booking') },
   ];
 
@@ -97,6 +98,16 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
                   {t('services.seo.title')}
                 </span>
               </li>
+              <li>
+                <span className={`text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
+                  {t('Hosting & Domain Setup')}
+                </span>
+              </li>
+              <li>
+                <span className={`text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
+                  {t('Website Customization')}
+                </span>
+              </li>
             </ul>
           </div>
 
@@ -108,18 +119,18 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <Mail className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                <span className="text-muted-foreground">{contactInfo?.email || 'info@devstudio.com'}</span>
+                <span className="text-muted-foreground">{contactInfo?.email || ''}</span>
               </li>
               <li className="flex items-start gap-3">
                 <Phone className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                <span className="text-muted-foreground" dir="ltr">{contactInfo?.phone || '+1 (555) 123-4567'}</span>
+                <span className="text-muted-foreground" dir="ltr">{contactInfo?.phone || '01017080519'}</span>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-primary mt-0.5 shrink-0" />
                 <span className={`text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
                   {language === 'ar' 
-                    ? (contactInfo?.address_ar || 'دبي، الإمارات العربية المتحدة')
-                    : (contactInfo?.address_en || 'Dubai, United Arab Emirates')
+                    ? (contactInfo?.address_ar || 'نعمل عن بعد')
+                    : (contactInfo?.address_en || 'Remote')
                   }
                 </span>
               </li>
