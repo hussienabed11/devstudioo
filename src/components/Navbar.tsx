@@ -65,21 +65,16 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center">
-              <img
-                src="/Vertex.png"
-                alt="Vertex Logo"
-                className="w-full h-full object-contain"
-              />
-            </div>
+<div className="w-28 h-28 md:w-32 md:h-32 rounded-2xl overflow-hidden flex items-center justify-center">
+  <img
+    src="/Vetrex.png"
+    alt="Vertex Solutions Logo"
+    className="w-full h-full object-contain"
+  />
+</div>
 
-            <span
-              className={`font-bold text-xl text-foreground ${
-                dir === 'rtl' ? 'font-arabic-heading text-foreground/90' : ''
-              }`}
-            >
-              Vertex Solutions
-            </span>
+
+
           </Link>
 
           {/* Desktop Navigation */}
