@@ -29,20 +29,35 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
   };
 
   return (
-    <footer className="bg-card border-t border-border">
+    <footer ref={ref} className="bg-card border-t border-border">
       <div className="container mx-auto px-4 py-12 md:py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+
           {/* Brand */}
           <div className="lg:col-span-1">
-            <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-gradient-brand flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-xl">D</span>
+            <Link to="/" className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center">
+                <img
+                  src="/Vertex.png"
+                  alt="Vertex Solutions Logo"
+                  className="w-full h-full object-contain"
+                />
               </div>
-              <span className={`font-bold text-xl ${dir === 'rtl' ? 'font-arabic-heading text-foreground/90' : ''}`}>
-                {dir === 'rtl' ? 'Vertex Solutions ' : 'Vertex Solutions'}
+
+              <span
+                className={`font-bold text-xl ${
+                  dir === 'rtl' ? 'font-arabic-heading text-foreground/90' : ''
+                }`}
+              >
+                Vertex Solutions
               </span>
             </Link>
-            <p className={`text-muted-foreground leading-relaxed ${dir === 'rtl' ? 'font-arabic' : ''}`}>
+
+            <p
+              className={`text-muted-foreground leading-relaxed ${
+                dir === 'rtl' ? 'font-arabic' : ''
+              }`}
+            >
               {t('footer.description')}
             </p>
           </div>
@@ -63,7 +78,9 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
                         handleNavClick(link.href);
                       }
                     }}
-                    className={`text-muted-foreground hover:text-primary transition-colors ${dir === 'rtl' ? 'font-arabic' : ''}`}
+                    className={`text-muted-foreground hover:text-primary transition-colors ${
+                      dir === 'rtl' ? 'font-arabic' : ''
+                    }`}
                   >
                     {link.label}
                   </a>
@@ -78,38 +95,20 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
               {t('services.title')}
             </h4>
             <ul className="space-y-3">
-              <li>
-                <span className={`text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
-                  {t('services.uiux.title')}
-                </span>
-              </li>
-              <li>
-                <span className={`text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
-                  {t('services.web.title')}
-                </span>
-              </li>
-              <li>
-                <span className={`text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
-                  {t('services.mobile.title')}
-                </span>
-              </li>
-            <li>
-              <span className={`text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
-                {t('services.seo.title')}
-              </span>
-            </li>
-
-            <li>
-              <span className={`text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
-                {t('services.hosting.title')}
-              </span>
-            </li>
-
-            <li>
-              <span className={`text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
-                {t('services.customization.title')}
-              </span>
-              </li>
+              {[
+                'services.uiux.title',
+                'services.web.title',
+                'services.mobile.title',
+                'services.seo.title',
+                'services.hosting.title',
+                'services.customization.title',
+              ].map((key) => (
+                <li key={key}>
+                  <span className={`text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
+                    {t(key)}
+                  </span>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -125,45 +124,43 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
               </li>
               <li className="flex items-start gap-3">
                 <Phone className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                <span className="text-muted-foreground" dir="ltr">{contactInfo?.phone || '01017080519'}</span>
+                <span className="text-muted-foreground" dir="ltr">
+                  {contactInfo?.phone || '01017080519'}
+                </span>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-primary mt-0.5 shrink-0" />
                 <span className={`text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
-                  {language === 'ar' 
-                    ? (contactInfo?.address_ar || 'نعمل عن بعد')
-                    : (contactInfo?.address_en || 'Remote')
-                  }
+                  {language === 'ar'
+                    ? contactInfo?.address_ar || 'نعمل عن بعد'
+                    : contactInfo?.address_en || 'Remote'}
                 </span>
               </li>
             </ul>
           </div>
         </div>
 
-{/* Bottom Bar */}
-<div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
-  <p className={`text-sm text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
-    © {year} Vertex Solutions. {t('footer.rights')}
-  </p>
-  <div className="flex items-center gap-6 text-sm text-muted-foreground">
-    <a href="#" className="hover:text-primary transition-colors">
-      {language === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy'}
-    </a>
-    <a href="#" className="hover:text-primary transition-colors">
-      {language === 'ar' ? 'الشروط والأحكام' : 'Terms of Service'}
-    </a>
-  </div>
+        {/* Bottom Bar */}
+        <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className={`text-sm text-muted-foreground ${dir === 'rtl' ? 'font-arabic' : ''}`}>
+            © {year} Vertex Solutions. {t('footer.rights')}
+          </p>
 
-  {/* Created by Hussien Abed */}
-  <p className="mt-4 text-xs text-muted-foreground italic w-full text-center">
-    {language === 'ar' ? (
-      <>تم الإنشاء بواسطة <span className="text-primary">حسين عابد</span></>
-    ) : (
-      <>Created by <span className="text-primary">Hussien Abed</span></>
-    )}
-  </p>
-</div>
+          <div className="flex items-center gap-6 text-sm text-muted-foreground">
+            <a href="#" className="hover:text-primary transition-colors">
+              {language === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy'}
+            </a>
+            <a href="#" className="hover:text-primary transition-colors">
+              {language === 'ar' ? 'الشروط والأحكام' : 'Terms of Service'}
+            </a>
+          </div>
 
+          <p className="mt-4 text-xs text-muted-foreground italic w-full text-center">
+            {language === 'ar'
+              ? <>تم الإنشاء بواسطة <span className="text-primary">حسين عابد</span></>
+              : <>Created by <span className="text-primary">Hussien Abed</span></>}
+          </p>
+        </div>
       </div>
     </footer>
   );

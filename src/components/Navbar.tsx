@@ -62,11 +62,17 @@ export default function Navbar() {
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
+
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-lg bg-gradient-brand flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-xl">VS</span>
+          <Link to="/" className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center">
+              <img
+                src="/Vertex.png"
+                alt="Vertex Logo"
+                className="w-full h-full object-contain"
+              />
             </div>
+
             <span
               className={`font-bold text-xl text-foreground ${
                 dir === 'rtl' ? 'font-arabic-heading text-foreground/90' : ''
@@ -95,7 +101,6 @@ export default function Navbar() {
               </a>
             ))}
 
-            {/* Admin link يظهر للأدمن فقط */}
             {isAdmin && (
               <Link
                 to="/admin"
@@ -113,11 +118,7 @@ export default function Navbar() {
             </Button>
 
             <Button variant="ghost" size="icon" onClick={toggleTheme}>
-              {theme === 'light' ? (
-                <Moon className="h-5 w-5" />
-              ) : (
-                <Sun className="h-5 w-5" />
-              )}
+              {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
             </Button>
           </div>
 
@@ -127,17 +128,9 @@ export default function Navbar() {
               <Globe className="h-5 w-5" />
             </Button>
             <Button variant="ghost" size="icon" onClick={toggleTheme}>
-              {theme === 'light' ? (
-                <Moon className="h-5 w-5" />
-              ) : (
-                <Sun className="h-5 w-5" />
-              )}
+              {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
             </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsOpen(!isOpen)}
-            >
+            <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)}>
               {isOpen ? <X /> : <Menu />}
             </Button>
           </div>
