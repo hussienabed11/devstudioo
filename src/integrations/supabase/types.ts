@@ -92,6 +92,149 @@ export type Database = {
         }
         Relationships: []
       }
+      job_applications: {
+        Row: {
+          cover_letter: string | null
+          created_at: string
+          cv_url: string | null
+          email: string
+          full_name: string
+          id: string
+          job_id: string
+          linkedin_url: string | null
+          phone: string
+          portfolio_url: string | null
+          status: Database["public"]["Enums"]["application_status"]
+          updated_at: string
+          years_of_experience: string
+        }
+        Insert: {
+          cover_letter?: string | null
+          created_at?: string
+          cv_url?: string | null
+          email: string
+          full_name: string
+          id?: string
+          job_id: string
+          linkedin_url?: string | null
+          phone: string
+          portfolio_url?: string | null
+          status?: Database["public"]["Enums"]["application_status"]
+          updated_at?: string
+          years_of_experience?: string
+        }
+        Update: {
+          cover_letter?: string | null
+          created_at?: string
+          cv_url?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          job_id?: string
+          linkedin_url?: string | null
+          phone?: string
+          portfolio_url?: string | null
+          status?: Database["public"]["Enums"]["application_status"]
+          updated_at?: string
+          years_of_experience?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_applications_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      jobs: {
+        Row: {
+          application_deadline: string | null
+          benefits_ar: string | null
+          benefits_en: string | null
+          created_at: string
+          department_ar: string | null
+          department_en: string | null
+          display_order: number | null
+          full_description_ar: string
+          full_description_en: string
+          id: string
+          job_type: string
+          location_ar: string
+          location_en: string
+          nice_to_have_ar: string | null
+          nice_to_have_en: string | null
+          requirements_ar: string
+          requirements_en: string
+          responsibilities_ar: string
+          responsibilities_en: string
+          short_description_ar: string
+          short_description_en: string
+          slug: string
+          status: string
+          title_ar: string
+          title_en: string
+          updated_at: string
+        }
+        Insert: {
+          application_deadline?: string | null
+          benefits_ar?: string | null
+          benefits_en?: string | null
+          created_at?: string
+          department_ar?: string | null
+          department_en?: string | null
+          display_order?: number | null
+          full_description_ar?: string
+          full_description_en?: string
+          id?: string
+          job_type?: string
+          location_ar?: string
+          location_en?: string
+          nice_to_have_ar?: string | null
+          nice_to_have_en?: string | null
+          requirements_ar?: string
+          requirements_en?: string
+          responsibilities_ar?: string
+          responsibilities_en?: string
+          short_description_ar: string
+          short_description_en: string
+          slug: string
+          status?: string
+          title_ar: string
+          title_en: string
+          updated_at?: string
+        }
+        Update: {
+          application_deadline?: string | null
+          benefits_ar?: string | null
+          benefits_en?: string | null
+          created_at?: string
+          department_ar?: string | null
+          department_en?: string | null
+          display_order?: number | null
+          full_description_ar?: string
+          full_description_en?: string
+          id?: string
+          job_type?: string
+          location_ar?: string
+          location_en?: string
+          nice_to_have_ar?: string | null
+          nice_to_have_en?: string | null
+          requirements_ar?: string
+          requirements_en?: string
+          responsibilities_ar?: string
+          responsibilities_en?: string
+          short_description_ar?: string
+          short_description_en?: string
+          slug?: string
+          status?: string
+          title_ar?: string
+          title_en?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       packages: {
         Row: {
           created_at: string
@@ -272,6 +415,12 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "user"
+      application_status:
+        | "new"
+        | "reviewing"
+        | "shortlisted"
+        | "rejected"
+        | "hired"
       booking_status: "pending" | "approved" | "rejected"
     }
     CompositeTypes: {
@@ -401,6 +550,13 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user"],
+      application_status: [
+        "new",
+        "reviewing",
+        "shortlisted",
+        "rejected",
+        "hired",
+      ],
       booking_status: ["pending", "approved", "rejected"],
     },
   },
