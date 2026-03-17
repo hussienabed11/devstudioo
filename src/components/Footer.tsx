@@ -65,20 +65,29 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
             <ul className="space-y-3">
               {quickLinks.map((link) => (
                 <li key={link.href}>
-                  <a
-                    href={link.href}
-                    onClick={(e) => {
-                      if (link.href.startsWith('/#')) {
+                  {link.href.startsWith('/#') ? (
+                    <a
+                      href={link.href}
+                      onClick={(e) => {
                         e.preventDefault();
                         handleNavClick(link.href);
-                      }
-                    }}
-                    className={`text-muted-foreground hover:text-primary transition-colors ${
-                      dir === 'rtl' ? 'font-arabic' : ''
-                    }`}
-                  >
-                    {link.label}
-                  </a>
+                      }}
+                      className={`text-muted-foreground hover:text-primary transition-colors ${
+                        dir === 'rtl' ? 'font-arabic' : ''
+                      }`}
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      to={link.href}
+                      className={`text-muted-foreground hover:text-primary transition-colors ${
+                        dir === 'rtl' ? 'font-arabic' : ''
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

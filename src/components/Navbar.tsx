@@ -154,19 +154,28 @@ export default function Navbar() {
           >
             <div className="container mx-auto px-4 py-4 space-y-3">
               {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={(e) => {
-                    if (link.href.includes('#')) {
+                link.href.includes('#') ? (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={(e) => {
                       e.preventDefault();
                       handleNavClick(link.href);
-                    }
-                  }}
-                  className="block py-2 text-foreground/80 hover:text-foreground"
-                >
-                  {link.label}
-                </a>
+                    }}
+                    className="block py-2 text-foreground/80 hover:text-foreground"
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.href}
+                    to={link.href}
+                    className="block py-2 text-foreground/80 hover:text-foreground"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                )
               ))}
 
               {isAdmin && (
