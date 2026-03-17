@@ -177,7 +177,7 @@ export default function ApplicationsManagement() {
                     <TableCell>{isAr ? app.jobs?.title_ar : app.jobs?.title_en}</TableCell>
                     <TableCell>{new Date(app.created_at).toLocaleDateString(isAr ? 'ar-EG' : 'en-US')}</TableCell>
                     <TableCell>
-                      <Select value={app.status} onValueChange={v => updateStatus(app.id, v)}>
+                      <Select value={app.status} onValueChange={(v: "new" | "reviewing" | "shortlisted" | "rejected" | "hired") => updateStatus(app.id, v)}>
                         <SelectTrigger className="w-[130px]" onClick={e => e.stopPropagation()}>
                           <Badge variant="outline" className={statusColors[app.status]}>
                             {isAr ? statusLabels[app.status]?.ar : statusLabels[app.status]?.en}
