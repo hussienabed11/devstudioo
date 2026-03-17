@@ -39,6 +39,8 @@ import PortfolioManagement from '@/components/admin/PortfolioManagement';
 import ServicesManagement from '@/components/admin/ServicesManagement';
 import ContactInfoManagement from '@/components/admin/ContactInfoManagement';
 import PackagesManagement from '@/components/admin/PackagesManagement';
+import JobsManagement from '@/components/admin/JobsManagement';
+import ApplicationsManagement from '@/components/admin/ApplicationsManagement';
 
 type BookingStatus = 'pending' | 'approved' | 'rejected';
 
