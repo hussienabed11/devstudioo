@@ -81,20 +81,29 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={(e) => {
-                  if (link.href.includes('#')) {
+              link.href.includes('#') ? (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => {
                     e.preventDefault();
                     handleNavClick(link.href);
-                  }
-                }}
-                className="text-foreground/80 hover:text-foreground transition-colors font-medium relative group"
-              >
-                {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-brand-horizontal transition-all duration-300 group-hover:w-full" />
-              </a>
+                  }}
+                  className="text-foreground/80 hover:text-foreground transition-colors font-medium relative group"
+                >
+                  {link.label}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-brand-horizontal transition-all duration-300 group-hover:w-full" />
+                </a>
+              ) : (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className="text-foreground/80 hover:text-foreground transition-colors font-medium relative group"
+                >
+                  {link.label}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-brand-horizontal transition-all duration-300 group-hover:w-full" />
+                </Link>
+              )
             ))}
 
             {isAdmin && (
