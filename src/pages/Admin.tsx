@@ -408,6 +408,16 @@ const handleLogout = async () => {
             <PackagesManagement />
           </TabsContent>
 
+          {/* Jobs Tab */}
+          <TabsContent value="jobs">
+            <JobsManagement />
+          </TabsContent>
+
+          {/* Applications Tab */}
+          <TabsContent value="applications">
+            <ApplicationsManagement />
+          </TabsContent>
+
           {/* Contact Tab */}
           <TabsContent value="contact">
             <ContactInfoManagement />

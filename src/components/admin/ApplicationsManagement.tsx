@@ -71,7 +71,7 @@ export default function ApplicationsManagement() {
 
   useEffect(() => { fetchApplications(); }, []);
 
-  const updateStatus = async (id: string, status: string) => {
+  const updateStatus = async (id: string, status: "new" | "reviewing" | "shortlisted" | "rejected" | "hired") => {
     const { error } = await supabase.from('job_applications').update({ status }).eq('id', id);
     if (error) toast.error('Update failed');
     else {
