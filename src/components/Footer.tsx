@@ -15,6 +15,7 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
     { href: '/#services', label: t('nav.services') },
     { href: '/#portfolio', label: t('nav.portfolio') },
     { href: '/#packages', label: t('packages') },
+    { href: '/careers', label: language === 'ar' ? 'الوظائف' : 'Careers' },
     { href: '/#booking', label: t('nav.booking') },
   ];
 
