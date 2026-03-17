@@ -210,7 +210,7 @@ const handleLogout = async () => {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-2xl grid-cols-5">
+          <TabsList className="grid w-full max-w-4xl grid-cols-7">
             <TabsTrigger value="bookings" className="gap-2">
               <Calendar className="w-4 h-4" />
               <span className="hidden sm:inline">{t('admin.bookings')}</span>
@@ -226,6 +226,14 @@ const handleLogout = async () => {
             <TabsTrigger value="packages" className="gap-2">
               <Package className="w-4 h-4" />
               <span className="hidden sm:inline">{t('admin.packages')}</span>
+            </TabsTrigger>
+            <TabsTrigger value="jobs" className="gap-2">
+              <Briefcase className="w-4 h-4" />
+              <span className="hidden sm:inline">{language === 'ar' ? 'الوظائف' : 'Jobs'}</span>
+            </TabsTrigger>
+            <TabsTrigger value="applications" className="gap-2">
+              <Users className="w-4 h-4" />
+              <span className="hidden sm:inline">{language === 'ar' ? 'الطلبات' : 'Applications'}</span>
             </TabsTrigger>
             <TabsTrigger value="contact" className="gap-2">
               <Phone className="w-4 h-4" />
