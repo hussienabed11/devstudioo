@@ -272,7 +272,7 @@ export default function ApplicationsManagement() {
               {/* Status */}
               <div className="space-y-2">
                 <p className="text-muted-foreground text-xs">{isAr ? 'تحديث الحالة' : 'Update Status'}</p>
-                <Select value={selected.status} onValueChange={v => updateStatus(selected.id, v)}>
+                <Select value={selected.status} onValueChange={(v: "new" | "reviewing" | "shortlisted" | "rejected" | "hired") => updateStatus(selected.id, v)}>
                   <SelectTrigger>
                     <Badge variant="outline" className={statusColors[selected.status]}>
                       {isAr ? statusLabels[selected.status]?.ar : statusLabels[selected.status]?.en}
