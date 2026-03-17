@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Loader2, Trash2, CheckCircle, XCircle, Clock, RefreshCw, Calendar, Image, Settings, Package, Phone } from 'lucide-react';
+import { ArrowLeft, Loader2, Trash2, CheckCircle, XCircle, Clock, RefreshCw, Calendar, Image, Settings, Package, Phone, Briefcase, Users } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -39,6 +39,8 @@ import PortfolioManagement from '@/components/admin/PortfolioManagement';
 import ServicesManagement from '@/components/admin/ServicesManagement';
 import ContactInfoManagement from '@/components/admin/ContactInfoManagement';
 import PackagesManagement from '@/components/admin/PackagesManagement';
+import JobsManagement from '@/components/admin/JobsManagement';
+import ApplicationsManagement from '@/components/admin/ApplicationsManagement';
 
 type BookingStatus = 'pending' | 'approved' | 'rejected';
 
@@ -208,7 +210,7 @@ const handleLogout = async () => {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-2xl grid-cols-5">
+          <TabsList className="grid w-full max-w-4xl grid-cols-7">
             <TabsTrigger value="bookings" className="gap-2">
               <Calendar className="w-4 h-4" />
               <span className="hidden sm:inline">{t('admin.bookings')}</span>
@@ -224,6 +226,14 @@ const handleLogout = async () => {
             <TabsTrigger value="packages" className="gap-2">
               <Package className="w-4 h-4" />
               <span className="hidden sm:inline">{t('admin.packages')}</span>
+            </TabsTrigger>
+            <TabsTrigger value="jobs" className="gap-2">
+              <Briefcase className="w-4 h-4" />
+              <span className="hidden sm:inline">{language === 'ar' ? 'الوظائف' : 'Jobs'}</span>
+            </TabsTrigger>
+            <TabsTrigger value="applications" className="gap-2">
+              <Users className="w-4 h-4" />
+              <span className="hidden sm:inline">{language === 'ar' ? 'الطلبات' : 'Applications'}</span>
             </TabsTrigger>
             <TabsTrigger value="contact" className="gap-2">
               <Phone className="w-4 h-4" />
@@ -396,6 +406,16 @@ const handleLogout = async () => {
           {/* Packages Tab */}
           <TabsContent value="packages">
             <PackagesManagement />
+          </TabsContent>
+
+          {/* Jobs Tab */}
+          <TabsContent value="jobs">
+            <JobsManagement />
+          </TabsContent>
+
+          {/* Applications Tab */}
+          <TabsContent value="applications">
+            <ApplicationsManagement />
           </TabsContent>
 
           {/* Contact Tab */}

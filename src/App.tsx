@@ -12,6 +12,8 @@ import Auth from "./pages/Auth";
 import ResetPassword from "./pages/ResetPassword";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
+import Careers from "./pages/Careers";
+import JobDetails from "./pages/JobDetails";
 
 
 const queryClient = new QueryClient();
@@ -31,6 +33,8 @@ const App = () => (
                     <Route path="/auth" element={<Auth />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="/reset-password" element={<ResetPassword />} />
+                    <Route path="/careers" element={<Careers />} />
+                    <Route path="/careers/:slug" element={<JobDetails />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
               </BrowserRouter>
