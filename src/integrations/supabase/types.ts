@@ -62,8 +62,11 @@ export type Database = {
           address_en: string | null
           created_at: string
           email: string
+          facebook_url: string | null
           id: string
+          linkedin_url: string | null
           phone: string
+          tiktok_url: string | null
           updated_at: string
           website_url: string | null
           whatsapp: string | null
@@ -73,8 +76,11 @@ export type Database = {
           address_en?: string | null
           created_at?: string
           email?: string
+          facebook_url?: string | null
           id?: string
+          linkedin_url?: string | null
           phone?: string
+          tiktok_url?: string | null
           updated_at?: string
           website_url?: string | null
           whatsapp?: string | null
@@ -84,8 +90,11 @@ export type Database = {
           address_en?: string | null
           created_at?: string
           email?: string
+          facebook_url?: string | null
           id?: string
+          linkedin_url?: string | null
           phone?: string
+          tiktok_url?: string | null
           updated_at?: string
           website_url?: string | null
           whatsapp?: string | null
