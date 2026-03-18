@@ -33,6 +33,12 @@ interface Application {
   jobs?: { title_en: string; title_ar: string; job_type: string } | null;
 }
 
+interface JobOption {
+  id: string;
+  title_en: string;
+  title_ar: string;
+}
+
 const statusColors: Record<string, string> = {
   new: 'bg-blue-500/10 text-blue-600 border-blue-500/20',
   reviewing: 'bg-yellow-500/10 text-yellow-600 border-yellow-500/20',
@@ -53,23 +59,34 @@ export default function ApplicationsManagement() {
   const { language, dir } = useLanguage();
   const isAr = language === 'ar';
   const [applications, setApplications] = useState<Application[]>([]);
+  const [jobs, setJobs] = useState<JobOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<Application | null>(null);
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterJobType, setFilterJobType] = useState('all');
+  const [filterJobId, setFilterJobId] = useState('all');
 
-  const fetchApplications = async () => {
-    const { data, error } = await supabase
-      .from('job_applications')
-      .select('*, jobs(title_en, title_ar, job_type)')
-      .order('created_at', { ascending: false });
-    if (error) { console.error(error); toast.error('Failed to load applications'); }
-    else setApplications(data || []);
+  const fetchData = async () => {
+    const [appsRes, jobsRes] = await Promise.all([
+      supabase
+        .from('job_applications')
+        .select('*, jobs(title_en, title_ar, job_type)')
+        .order('created_at', { ascending: false }),
+      supabase
+        .from('jobs')
+        .select('id, title_en, title_ar')
+        .order('created_at', { ascending: false }),
+    ]);
+
+    if (appsRes.error) { console.error(appsRes.error); toast.error('Failed to load applications'); }
+    else setApplications(appsRes.data || []);
+
+    if (!jobsRes.error) setJobs(jobsRes.data || []);
     setLoading(false);
   };
 
-  useEffect(() => { fetchApplications(); }, []);
+  useEffect(() => { fetchData(); }, []);
 
   const updateStatus = async (id: string, status: "new" | "reviewing" | "shortlisted" | "rejected" | "hired") => {
     const { error } = await supabase.from('job_applications').update({ status }).eq('id', id);
@@ -87,7 +104,8 @@ export default function ApplicationsManagement() {
       a.email.toLowerCase().includes(search.toLowerCase());
     const matchStatus = filterStatus === 'all' || a.status === filterStatus;
     const matchType = filterJobType === 'all' || a.jobs?.job_type === filterJobType;
-    return matchSearch && matchStatus && matchType;
+    const matchJob = filterJobId === 'all' || a.job_id === filterJobId;
+    return matchSearch && matchStatus && matchType && matchJob;
   });
 
   if (loading) return <div className="flex justify-center py-12"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div>;
@@ -130,16 +148,25 @@ export default function ApplicationsManagement() {
         <Select value={filterStatus} onValueChange={setFilterStatus}>
           <SelectTrigger className="w-[160px]"><SelectValue placeholder="Status" /></SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">{isAr ? 'الكل' : 'All Status'}</SelectItem>
+            <SelectItem value="all">{isAr ? 'كل الحالات' : 'All Status'}</SelectItem>
             {Object.entries(statusLabels).map(([k, v]) => (
               <SelectItem key={k} value={k}>{isAr ? v.ar : v.en}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Select value={filterJobId} onValueChange={setFilterJobId}>
+          <SelectTrigger className="w-[200px]"><SelectValue placeholder={isAr ? 'الوظيفة' : 'Job Position'} /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">{isAr ? 'كل الوظائف' : 'All Positions'}</SelectItem>
+            {jobs.map(j => (
+              <SelectItem key={j.id} value={j.id}>{isAr ? j.title_ar : j.title_en}</SelectItem>
             ))}
           </SelectContent>
         </Select>
         <Select value={filterJobType} onValueChange={setFilterJobType}>
           <SelectTrigger className="w-[160px]"><SelectValue placeholder="Type" /></SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">{isAr ? 'الكل' : 'All Types'}</SelectItem>
+            <SelectItem value="all">{isAr ? 'كل الأنواع' : 'All Types'}</SelectItem>
             <SelectItem value="full-time">Full-time</SelectItem>
             <SelectItem value="part-time">Part-time</SelectItem>
             <SelectItem value="internship">Internship</SelectItem>
@@ -240,7 +267,6 @@ export default function ApplicationsManagement() {
                 </div>
               </div>
 
-              {/* Links */}
               <div className="flex flex-wrap gap-2">
                 {selected.linkedin_url && selected.linkedin_url.trim() && (
                   <Button variant="outline" size="sm" onClick={() => window.open(selected.linkedin_url!, '_blank')} className="gap-1">
@@ -259,7 +285,6 @@ export default function ApplicationsManagement() {
                 )}
               </div>
 
-              {/* Cover Letter */}
               {selected.cover_letter && selected.cover_letter.trim() && (
                 <div>
                   <p className="text-muted-foreground text-xs mb-2">{isAr ? 'رسالة التقديم' : 'Cover Letter'}</p>
@@ -269,7 +294,6 @@ export default function ApplicationsManagement() {
                 </div>
               )}
 
-              {/* Status */}
               <div className="space-y-2">
                 <p className="text-muted-foreground text-xs">{isAr ? 'تحديث الحالة' : 'Update Status'}</p>
                 <Select value={selected.status} onValueChange={(v: "new" | "reviewing" | "shortlisted" | "rejected" | "hired") => updateStatus(selected.id, v)}>

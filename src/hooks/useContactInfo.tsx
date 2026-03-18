@@ -9,6 +9,9 @@ interface ContactInfo {
   address_en: string | null;
   address_ar: string | null;
   website_url: string | null;
+  facebook_url: string | null;
+  linkedin_url: string | null;
+  tiktok_url: string | null;
 }
 
 interface ContactInfoContextType {
@@ -32,7 +35,7 @@ export function ContactInfoProvider({ children }: { children: ReactNode }) {
         .maybeSingle();
 
       if (error) throw error;
-      setContactInfo(data);
+      setContactInfo(data as unknown as ContactInfo);
     } catch (error) {
       console.error('Error fetching contact info:', error);
     } finally {
