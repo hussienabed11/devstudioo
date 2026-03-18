@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sun, Moon, Globe } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -15,6 +15,7 @@ export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
   const { isAdmin } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,16 +43,37 @@ export default function Navbar() {
     setLanguage(language === 'en' ? 'ar' : 'en');
   };
 
-  const handleNavClick = (href) => {
+  const handleNavClick = (href: string) => {
+    setIsOpen(false);
+
+    if (href === '/') {
+      if (location.pathname === '/') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        navigate('/');
+      }
+      return;
+    }
+
     if (href.includes('#')) {
       const elementId = href.split('#')[1];
-      const element = document.getElementById(elementId);
-      if (element) {
-        setTimeout(() => {
+      if (location.pathname === '/') {
+        const element = document.getElementById(elementId);
+        if (element) {
           element.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
+        }
+      } else {
+        navigate('/', { state: { scrollTo: elementId } });
       }
-      setIsOpen(false);
+    }
+  };
+
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (location.pathname === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      navigate('/');
     }
   };
 
@@ -65,23 +87,20 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16 md:h-20">
 
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3">
-<div className="w-28 h-28 md:w-32 md:h-32 rounded-2xl overflow-hidden flex items-center justify-center">
-  <img
-    src="/Vetrex.png"
-    alt="Vertex Solutions Logo"
-    className="w-full h-full object-contain"
-  />
-</div>
-
-
-
-          </Link>
+          <a href="/" onClick={handleLogoClick} className="flex items-center gap-3 cursor-pointer">
+            <div className="w-28 h-28 md:w-32 md:h-32 rounded-2xl overflow-hidden flex items-center justify-center">
+              <img
+                src="/Vetrex.png"
+                alt="Vertex Solutions Logo"
+                className="w-full h-full object-contain"
+              />
+            </div>
+          </a>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
-              link.href.includes('#') ? (
+              link.href.includes('#') || link.href === '/' ? (
                 <a
                   key={link.href}
                   href={link.href}
@@ -154,7 +173,7 @@ export default function Navbar() {
           >
             <div className="container mx-auto px-4 py-4 space-y-3">
               {navLinks.map((link) => (
-                link.href.includes('#') ? (
+                link.href.includes('#') || link.href === '/' ? (
                   <a
                     key={link.href}
                     href={link.href}
