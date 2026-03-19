@@ -77,7 +77,7 @@ export function useGroupedContent(sectionName: string, prefix: string) {
 
   const list = Object.entries(grouped)
     .sort(([a], [b]) => Number(a) - Number(b))
-    .map(([num, fields]) => ({ num, ...fields }));
+    .map(([num, fields]) => ({ num, ...fields } as { num: string } & Record<string, string>));
 
   return { list, loading, get, refetch, items };
 }
