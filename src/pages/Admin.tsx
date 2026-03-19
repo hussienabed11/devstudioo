@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Loader2, Trash2, CheckCircle, XCircle, Clock, RefreshCw, Calendar, Image, Settings, Package, Phone, Briefcase, Users } from 'lucide-react';
+import { ArrowLeft, Loader2, Trash2, CheckCircle, XCircle, Clock, RefreshCw, Calendar, Image, Settings, Package, Phone, Briefcase, Users, FileText } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -41,6 +41,7 @@ import ContactInfoManagement from '@/components/admin/ContactInfoManagement';
 import PackagesManagement from '@/components/admin/PackagesManagement';
 import JobsManagement from '@/components/admin/JobsManagement';
 import ApplicationsManagement from '@/components/admin/ApplicationsManagement';
+import SectionContentManagement from '@/components/admin/SectionContentManagement';
 
 type BookingStatus = 'pending' | 'approved' | 'rejected';
 
@@ -210,10 +211,14 @@ const handleLogout = async () => {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-4xl grid-cols-7">
+          <TabsList className="grid w-full max-w-5xl grid-cols-8">
             <TabsTrigger value="bookings" className="gap-2">
               <Calendar className="w-4 h-4" />
               <span className="hidden sm:inline">{t('admin.bookings')}</span>
+            </TabsTrigger>
+            <TabsTrigger value="cms" className="gap-2">
+              <FileText className="w-4 h-4" />
+              <span className="hidden sm:inline">{language === 'ar' ? 'المحتوى' : 'CMS'}</span>
             </TabsTrigger>
             <TabsTrigger value="portfolio" className="gap-2">
               <Image className="w-4 h-4" />
@@ -391,6 +396,11 @@ const handleLogout = async () => {
                 </div>
               )}
             </motion.div>
+          </TabsContent>
+
+          {/* CMS Tab */}
+          <TabsContent value="cms">
+            <SectionContentManagement />
           </TabsContent>
 
           {/* Portfolio Tab */}

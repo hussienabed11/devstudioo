@@ -349,6 +349,45 @@ export type Database = {
         }
         Relationships: []
       }
+      section_content: {
+        Row: {
+          content_ar: string
+          content_en: string
+          content_key: string
+          content_type: string
+          created_at: string
+          display_order: number
+          id: string
+          parent_key: string | null
+          section_name: string
+          updated_at: string
+        }
+        Insert: {
+          content_ar?: string
+          content_en?: string
+          content_key: string
+          content_type?: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          parent_key?: string | null
+          section_name: string
+          updated_at?: string
+        }
+        Update: {
+          content_ar?: string
+          content_en?: string
+          content_key?: string
+          content_type?: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          parent_key?: string | null
+          section_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       services: {
         Row: {
           created_at: string
