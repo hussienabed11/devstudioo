@@ -3,23 +3,28 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Play } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
+import { useSectionContent } from '@/hooks/useSectionContent';
 
 export default function HeroSection() {
-  const { t, dir } = useLanguage();
+  const { dir } = useLanguage();
+  const { get, getAll, loading } = useSectionContent('hero');
 
-  const scrollToBooking = () => {
-    const element = document.getElementById('booking');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+  const scrollTo = (target: string) => {
+    const id = target.replace('#', '');
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const scrollToPortfolio = () => {
-    const element = document.getElementById('portfolio');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+  // Build stats from dynamic keys
+  const statItems = getAll('stat_');
+  const stats: { value: string; label: string }[] = [];
+  for (let i = 0; i < statItems.length; i += 2) {
+    const valItem = statItems[i];
+    const labelItem = statItems[i + 1];
+    if (valItem && labelItem) {
+      const lang = dir === 'rtl' ? 'content_ar' : 'content_en';
+      stats.push({ value: valItem[lang], label: labelItem[lang] });
     }
-  };
+  }
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
@@ -48,7 +53,7 @@ export default function HeroSection() {
           >
             <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
             <span className="text-sm font-medium text-muted-foreground">
-              {dir === 'rtl' ? 'نحن متاحون للمشاريع الجديدة' : 'Available for new projects'}
+              {get('badge')}
             </span>
           </motion.div>
 
@@ -61,8 +66,8 @@ export default function HeroSection() {
               dir === 'rtl' ? 'font-arabic-heading' : ''
             }`}
           >
-            {t('hero.title')}{' '}
-            <span className="text-gradient">{t('hero.title.highlight')}</span>
+            {get('title')}{' '}
+            <span className="text-gradient">{get('title_highlight')}</span>
           </motion.h1>
 
           {/* Subtitle */}
@@ -74,7 +79,7 @@ export default function HeroSection() {
               dir === 'rtl' ? 'font-arabic' : ''
             }`}
           >
-            {t('hero.subtitle')}
+            {get('subtitle')}
           </motion.p>
 
           {/* CTA Buttons */}
@@ -86,21 +91,21 @@ export default function HeroSection() {
           >
             <Button
               size="lg"
-              onClick={scrollToBooking}
+              onClick={() => scrollTo(get('cta_button_1_link') || '#booking')}
               className="bg-gradient-brand hover:opacity-90 transition-opacity text-primary-foreground px-8 py-6 text-lg font-semibold shadow-brand group"
             >
-              {t('hero.cta')}
+              {get('cta_button_1_text')}
               <ArrowRight className={`h-5 w-5 transition-transform group-hover:translate-x-1 ${dir === 'rtl' ? 'mr-2 rotate-180 group-hover:-translate-x-1' : 'ml-2'}`} />
             </Button>
             
             <Button
               size="lg"
               variant="outline"
-              onClick={scrollToPortfolio}
+              onClick={() => scrollTo(get('cta_button_2_link') || '#portfolio')}
               className="border-border hover:border-primary/50 px-8 py-6 text-lg group"
             >
               <Play className={`h-5 w-5 ${dir === 'rtl' ? 'ml-2' : 'mr-2'}`} />
-              {t('hero.secondary')}
+              {get('cta_button_2_text')}
             </Button>
           </motion.div>
 
@@ -111,11 +116,7 @@ export default function HeroSection() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="flex flex-wrap items-center justify-center gap-8 md:gap-16 mt-16 pt-8 border-t border-border/50"
           >
-            {[
-              { value: '3+', label: dir === 'rtl' ? 'سنوات خبرة' : 'Years Experience' },
-              { value: '50+', label: dir === 'rtl' ? 'مشروع مكتمل' : 'Projects Done' },
-              { value: '30+', label: dir === 'rtl' ? 'عميل سعيد' : 'Happy Clients' },
-            ].map((stat, index) => (
+            {stats.map((stat, index) => (
               <div key={index} className="text-center">
                 <div className="text-3xl md:text-4xl font-bold text-gradient">{stat.value}</div>
                 <div className="text-sm text-muted-foreground mt-1">{stat.label}</div>
