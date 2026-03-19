@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Loader2, Trash2, CheckCircle, XCircle, Clock, RefreshCw, Calendar, Image, Settings, Package, Phone, Briefcase, Users } from 'lucide-react';
+import { ArrowLeft, Loader2, Trash2, CheckCircle, XCircle, Clock, RefreshCw, Calendar, Image, Settings, Package, Phone, Briefcase, Users, FileText } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
