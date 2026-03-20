@@ -403,6 +403,11 @@ const handleLogout = async () => {
             </motion.div>
           </TabsContent>
 
+          {/* Leads Tab */}
+          <TabsContent value="leads">
+            <LeadsManagement />
+          </TabsContent>
+
           {/* CMS Tab */}
           <TabsContent value="cms">
             <SectionContentManagement />
