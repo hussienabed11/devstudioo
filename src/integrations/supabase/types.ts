@@ -388,6 +388,48 @@ export type Database = {
         }
         Relationships: []
       }
+      service_leads: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          is_important: boolean
+          message: string | null
+          phone: string
+          preferred_contact_time: string | null
+          selected_service: string
+          status: Database["public"]["Enums"]["lead_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          is_important?: boolean
+          message?: string | null
+          phone: string
+          preferred_contact_time?: string | null
+          selected_service: string
+          status?: Database["public"]["Enums"]["lead_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          is_important?: boolean
+          message?: string | null
+          phone?: string
+          preferred_contact_time?: string | null
+          selected_service?: string
+          status?: Database["public"]["Enums"]["lead_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       services: {
         Row: {
           created_at: string
@@ -470,6 +512,7 @@ export type Database = {
         | "rejected"
         | "hired"
       booking_status: "pending" | "approved" | "rejected"
+      lead_status: "new" | "contacted" | "closed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -606,6 +649,7 @@ export const Constants = {
         "hired",
       ],
       booking_status: ["pending", "approved", "rejected"],
+      lead_status: ["new", "contacted", "closed"],
     },
   },
 } as const
