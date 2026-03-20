@@ -171,6 +171,12 @@ export default function ServicesSection() {
           })}
         </div>
       </div>
+
+      <ServiceLeadForm
+        isOpen={leadFormOpen}
+        onClose={() => setLeadFormOpen(false)}
+        serviceName={selectedService}
+      />
     </section>
   );
 }
