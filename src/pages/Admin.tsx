@@ -42,6 +42,7 @@ import PackagesManagement from '@/components/admin/PackagesManagement';
 import JobsManagement from '@/components/admin/JobsManagement';
 import ApplicationsManagement from '@/components/admin/ApplicationsManagement';
 import SectionContentManagement from '@/components/admin/SectionContentManagement';
+import LeadsManagement from '@/components/admin/LeadsManagement';
 
 type BookingStatus = 'pending' | 'approved' | 'rejected';
 
