@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { Palette, Code2, Smartphone, Search, ArrowUpRight, Globe, Zap, Shield, Database, Cloud, Headphones, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
+import { Button } from '@/components/ui/button';
+import ServiceLeadForm from '@/components/ServiceLeadForm';
 
 const iconMap: Record<string, React.ElementType> = {
   Palette,
