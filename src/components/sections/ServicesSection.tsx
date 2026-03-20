@@ -48,6 +48,8 @@ export default function ServicesSection() {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
+  const [leadFormOpen, setLeadFormOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState('');
 
   useEffect(() => {
     const fetchServices = async () => {
