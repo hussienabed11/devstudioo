@@ -149,14 +149,23 @@ export default function ServicesSection() {
                 <h3 className={`text-xl md:text-2xl font-bold mb-3 group-hover:text-gradient transition-colors ${dir === 'rtl' ? 'font-arabic-heading' : ''}`}>
                   {language === 'ar' ? service.title_ar : service.title_en}
                 </h3>
-                <p className={`text-muted-foreground leading-relaxed ${dir === 'rtl' ? 'font-arabic' : ''}`}>
+                <p className={`text-muted-foreground leading-relaxed mb-4 ${dir === 'rtl' ? 'font-arabic' : ''}`}>
                   {language === 'ar' ? service.description_ar : service.description_en}
                 </p>
 
-                {/* Arrow */}
-                <div className={`absolute top-6 ${dir === 'rtl' ? 'left-6' : 'right-6'} w-10 h-10 rounded-full border border-border flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:bg-gradient-brand group-hover:border-transparent`}>
-                  <ArrowUpRight className={`w-5 h-5 text-muted-foreground group-hover:text-primary-foreground ${dir === 'rtl' ? 'rotate-180' : ''}`} />
-                </div>
+                {/* CTA Button */}
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+                  onClick={() => {
+                    setSelectedService(language === 'ar' ? service.title_ar : service.title_en);
+                    setLeadFormOpen(true);
+                  }}
+                >
+                  {language === 'ar' ? 'اطلب الآن' : 'Get Started'}
+                  <ArrowUpRight className={`w-4 h-4 ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`} />
+                </Button>
               </motion.div>
             );
           })}
