@@ -395,9 +395,11 @@ export type Database = {
           full_name: string
           id: string
           is_important: boolean
+          main_goal: string | null
           message: string | null
           phone: string
           preferred_contact_time: string | null
+          project_type: string | null
           selected_service: string
           status: Database["public"]["Enums"]["lead_status"]
           updated_at: string
@@ -408,9 +410,11 @@ export type Database = {
           full_name: string
           id?: string
           is_important?: boolean
+          main_goal?: string | null
           message?: string | null
           phone: string
           preferred_contact_time?: string | null
+          project_type?: string | null
           selected_service: string
           status?: Database["public"]["Enums"]["lead_status"]
           updated_at?: string
@@ -421,9 +425,11 @@ export type Database = {
           full_name?: string
           id?: string
           is_important?: boolean
+          main_goal?: string | null
           message?: string | null
           phone?: string
           preferred_contact_time?: string | null
+          project_type?: string | null
           selected_service?: string
           status?: Database["public"]["Enums"]["lead_status"]
           updated_at?: string
