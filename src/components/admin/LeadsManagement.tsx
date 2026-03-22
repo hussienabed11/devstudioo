@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Loader2, Trash2, Star, StarOff, Eye, X, RefreshCw, Search } from 'lucide-react';
+import { Loader2, Trash2, Star, StarOff, Eye, RefreshCw, Search } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -21,6 +21,8 @@ interface Lead {
   message: string | null;
   preferred_contact_time: string | null;
   selected_service: string;
+  project_type: string | null;
+  main_goal: string | null;
   status: LeadStatus;
   is_important: boolean;
   created_at: string;
@@ -30,6 +32,21 @@ const statusColors: Record<LeadStatus, string> = {
   new: 'bg-blue-500/10 text-blue-600 border-blue-500/20',
   contacted: 'bg-yellow-500/10 text-yellow-600 border-yellow-500/20',
   closed: 'bg-green-500/10 text-green-600 border-green-500/20',
+};
+
+const projectTypeLabels: Record<string, { en: string; ar: string }> = {
+  website: { en: 'Website', ar: 'موقع إلكتروني' },
+  mobile_app: { en: 'Mobile App', ar: 'تطبيق جوال' },
+  ui_ux: { en: 'UI/UX Design', ar: 'تصميم واجهات' },
+  seo: { en: 'SEO', ar: 'تحسين محركات البحث' },
+  other: { en: 'Other', ar: 'أخرى' },
+};
+
+const mainGoalLabels: Record<string, { en: string; ar: string }> = {
+  get_clients: { en: 'Get more clients', ar: 'الحصول على عملاء أكثر' },
+  increase_sales: { en: 'Increase sales', ar: 'زيادة المبيعات' },
+  booking_system: { en: 'Booking system', ar: 'نظام حجوزات' },
+  improve_brand: { en: 'Improve brand', ar: 'تحسين العلامة التجارية' },
 };
 
 export default function LeadsManagement() {
@@ -49,7 +66,7 @@ export default function LeadsManagement() {
         .select('*')
         .order('created_at', { ascending: false });
       if (error) throw error;
-      setLeads((data as Lead[]) || []);
+      setLeads((data as unknown as Lead[]) || []);
     } catch (error) {
       console.error(error);
       toast.error(language === 'ar' ? 'خطأ في تحميل البيانات' : 'Failed to load leads');
@@ -100,6 +117,12 @@ export default function LeadsManagement() {
     new: leads.filter(l => l.status === 'new').length,
     contacted: leads.filter(l => l.status === 'contacted').length,
     closed: leads.filter(l => l.status === 'closed').length,
+  };
+
+  const getLabel = (map: Record<string, { en: string; ar: string }>, key: string | null) => {
+    if (!key) return language === 'ar' ? 'غير محدد' : 'Not specified';
+    const item = map[key];
+    return item ? (language === 'ar' ? item.ar : item.en) : key;
   };
 
   if (loading) {
@@ -180,6 +203,7 @@ export default function LeadsManagement() {
                   <TableHead>{language === 'ar' ? 'الاسم' : 'Name'}</TableHead>
                   <TableHead>{language === 'ar' ? 'الخدمة' : 'Service'}</TableHead>
                   <TableHead>{language === 'ar' ? 'الهاتف' : 'Phone'}</TableHead>
+                  <TableHead>{language === 'ar' ? 'نوع المشروع' : 'Project'}</TableHead>
                   <TableHead>{language === 'ar' ? 'الحالة' : 'Status'}</TableHead>
                   <TableHead>{language === 'ar' ? 'التاريخ' : 'Date'}</TableHead>
                   <TableHead>{language === 'ar' ? 'إجراءات' : 'Actions'}</TableHead>
@@ -196,6 +220,7 @@ export default function LeadsManagement() {
                     <TableCell className="font-medium">{lead.full_name}</TableCell>
                     <TableCell><Badge variant="outline">{lead.selected_service}</Badge></TableCell>
                     <TableCell dir="ltr">{lead.phone}</TableCell>
+                    <TableCell className="text-sm">{getLabel(projectTypeLabels, lead.project_type)}</TableCell>
                     <TableCell>
                       <Select value={lead.status} onValueChange={(v: string) => updateStatus(lead.id, v as LeadStatus)}>
                         <SelectTrigger className="w-[130px]">
@@ -261,6 +286,8 @@ export default function LeadsManagement() {
               <DetailRow label={language === 'ar' ? 'البريد' : 'Email'} value={selectedLead.email} />
               <DetailRow label={language === 'ar' ? 'الهاتف' : 'Phone'} value={selectedLead.phone} dir="ltr" />
               <DetailRow label={language === 'ar' ? 'الخدمة' : 'Service'} value={selectedLead.selected_service} />
+              <DetailRow label={language === 'ar' ? 'نوع المشروع' : 'Project Type'} value={getLabel(projectTypeLabels, selectedLead.project_type)} />
+              <DetailRow label={language === 'ar' ? 'الهدف الرئيسي' : 'Main Goal'} value={getLabel(mainGoalLabels, selectedLead.main_goal)} />
               <DetailRow
                 label={language === 'ar' ? 'وقت التواصل' : 'Contact Time'}
                 value={selectedLead.preferred_contact_time || (language === 'ar' ? 'غير محدد' : 'Not specified')}

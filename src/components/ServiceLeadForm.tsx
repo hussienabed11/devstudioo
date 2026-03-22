@@ -22,6 +22,21 @@ const contactTimeOptions = [
   { value: 'anytime', en: 'Anytime', ar: 'أي وقت' },
 ];
 
+const projectTypeOptions = [
+  { value: 'website', en: 'Website', ar: 'موقع إلكتروني' },
+  { value: 'mobile_app', en: 'Mobile App', ar: 'تطبيق جوال' },
+  { value: 'ui_ux', en: 'UI/UX Design', ar: 'تصميم واجهات' },
+  { value: 'seo', en: 'SEO', ar: 'تحسين محركات البحث' },
+  { value: 'other', en: 'Other', ar: 'أخرى' },
+];
+
+const mainGoalOptions = [
+  { value: 'get_clients', en: 'Get more clients', ar: 'الحصول على عملاء أكثر' },
+  { value: 'increase_sales', en: 'Increase sales', ar: 'زيادة المبيعات' },
+  { value: 'booking_system', en: 'Booking system', ar: 'نظام حجوزات' },
+  { value: 'improve_brand', en: 'Improve brand', ar: 'تحسين العلامة التجارية' },
+];
+
 export default function ServiceLeadForm({ isOpen, onClose, serviceName }: ServiceLeadFormProps) {
   const { language, dir } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,14 +48,16 @@ export default function ServiceLeadForm({ isOpen, onClose, serviceName }: Servic
     phone: '',
     message: '',
     preferred_contact_time: '',
+    project_type: '',
+    main_goal: '',
   });
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
     if (!formData.full_name.trim()) newErrors.full_name = language === 'ar' ? 'الاسم مطلوب' : 'Name is required';
-    if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-      newErrors.email = language === 'ar' ? 'بريد إلكتروني صالح مطلوب' : 'Valid email is required';
     if (!formData.phone.trim()) newErrors.phone = language === 'ar' ? 'رقم الهاتف مطلوب' : 'Phone is required';
+    if (formData.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
+      newErrors.email = language === 'ar' ? 'بريد إلكتروني غير صالح' : 'Invalid email format';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -52,12 +69,14 @@ export default function ServiceLeadForm({ isOpen, onClose, serviceName }: Servic
     try {
       const { error } = await supabase.from('service_leads').insert({
         full_name: formData.full_name.trim(),
-        email: formData.email.trim(),
+        email: formData.email.trim() || 'not-provided@placeholder.com',
         phone: formData.phone.trim(),
         message: formData.message.trim() || null,
         preferred_contact_time: formData.preferred_contact_time || null,
         selected_service: serviceName,
-      });
+        project_type: formData.project_type || null,
+        main_goal: formData.main_goal || null,
+      } as any);
       if (error) throw error;
       setIsSuccess(true);
       toast.success(language === 'ar' ? 'تم إرسال طلبك بنجاح' : 'Your request has been submitted');
@@ -70,7 +89,7 @@ export default function ServiceLeadForm({ isOpen, onClose, serviceName }: Servic
   };
 
   const handleClose = () => {
-    setFormData({ full_name: '', email: '', phone: '', message: '', preferred_contact_time: '' });
+    setFormData({ full_name: '', email: '', phone: '', message: '', preferred_contact_time: '', project_type: '', main_goal: '' });
     setErrors({});
     setIsSuccess(false);
     onClose();
@@ -106,6 +125,7 @@ export default function ServiceLeadForm({ isOpen, onClose, serviceName }: Servic
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Full Name */}
             <div>
               <label className="text-sm font-medium mb-1.5 block">
                 {language === 'ar' ? 'الاسم الكامل' : 'Full Name'} *
@@ -118,9 +138,24 @@ export default function ServiceLeadForm({ isOpen, onClose, serviceName }: Servic
               <FieldError field="full_name" />
             </div>
 
+            {/* Phone */}
             <div>
               <label className="text-sm font-medium mb-1.5 block">
-                {language === 'ar' ? 'البريد الإلكتروني' : 'Email Address'} *
+                {language === 'ar' ? 'رقم الهاتف' : 'Phone Number'} *
+              </label>
+              <Input
+                dir="ltr"
+                value={formData.phone}
+                onChange={(e) => { setFormData(p => ({ ...p, phone: e.target.value })); setErrors(p => ({ ...p, phone: '' })); }}
+                placeholder="+20 10 0000 0000"
+              />
+              <FieldError field="phone" />
+            </div>
+
+            {/* Email (optional) */}
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">
+                {language === 'ar' ? 'البريد الإلكتروني' : 'Email Address'} <span className="text-muted-foreground text-xs">({language === 'ar' ? 'اختياري' : 'optional'})</span>
               </label>
               <Input
                 type="email"
@@ -131,19 +166,51 @@ export default function ServiceLeadForm({ isOpen, onClose, serviceName }: Servic
               <FieldError field="email" />
             </div>
 
+            {/* Project Type */}
             <div>
               <label className="text-sm font-medium mb-1.5 block">
-                {language === 'ar' ? 'رقم الهاتف' : 'Phone Number'} *
+                {language === 'ar' ? 'نوع المشروع' : 'Project Type'}
               </label>
-              <Input
-                dir="ltr"
-                value={formData.phone}
-                onChange={(e) => { setFormData(p => ({ ...p, phone: e.target.value })); setErrors(p => ({ ...p, phone: '' })); }}
-                placeholder="+971 50 000 0000"
-              />
-              <FieldError field="phone" />
+              <Select
+                value={formData.project_type}
+                onValueChange={(v) => setFormData(p => ({ ...p, project_type: v }))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={language === 'ar' ? 'اختر نوع المشروع' : 'Select project type'} />
+                </SelectTrigger>
+                <SelectContent>
+                  {projectTypeOptions.map(o => (
+                    <SelectItem key={o.value} value={o.value}>
+                      {language === 'ar' ? o.ar : o.en}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
+            {/* Main Goal */}
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">
+                {language === 'ar' ? 'الهدف الرئيسي' : 'Main Goal'}
+              </label>
+              <Select
+                value={formData.main_goal}
+                onValueChange={(v) => setFormData(p => ({ ...p, main_goal: v }))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={language === 'ar' ? 'ما هدفك الرئيسي؟' : 'What is your main goal?'} />
+                </SelectTrigger>
+                <SelectContent>
+                  {mainGoalOptions.map(o => (
+                    <SelectItem key={o.value} value={o.value}>
+                      {language === 'ar' ? o.ar : o.en}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Preferred Contact Time */}
             <div>
               <label className="text-sm font-medium mb-1.5 block">
                 {language === 'ar' ? 'وقت التواصل المفضل' : 'Preferred Contact Time'}
@@ -165,9 +232,10 @@ export default function ServiceLeadForm({ isOpen, onClose, serviceName }: Servic
               </Select>
             </div>
 
+            {/* Message */}
             <div>
               <label className="text-sm font-medium mb-1.5 block">
-                {language === 'ar' ? 'رسالة' : 'Message'}
+                {language === 'ar' ? 'رسالة' : 'Message'} <span className="text-muted-foreground text-xs">({language === 'ar' ? 'اختياري' : 'optional'})</span>
               </label>
               <Textarea
                 value={formData.message}

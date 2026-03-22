@@ -7,16 +7,7 @@ import { Button } from '@/components/ui/button';
 import ServiceLeadForm from '@/components/ServiceLeadForm';
 
 const iconMap: Record<string, React.ElementType> = {
-  Palette,
-  Code2,
-  Smartphone,
-  Search,
-  Globe,
-  Zap,
-  Shield,
-  Database,
-  Cloud,
-  Headphones,
+  Palette, Code2, Smartphone, Search, Globe, Zap, Shield, Database, Cloud, Headphones,
 };
 
 const colorMap: Record<string, string> = {
@@ -32,6 +23,17 @@ const colorMap: Record<string, string> = {
   Headphones: 'from-secondary to-secondary/60',
 };
 
+// Benefit-driven CTAs per service title
+const ctaMap: Record<string, { en: string; ar: string }> = {
+  'Web Development': { en: 'Get a Website That Brings You Clients', ar: 'احصل على موقع يجلب لك عملاء' },
+  'UI/UX Design': { en: 'Improve Your User Experience & Increase Conversions', ar: 'طوّر تجربة المستخدم وزوّد التحويلات' },
+  'Mobile Development': { en: 'Launch Your App and Reach More Customers', ar: 'أطلق تطبيقك ووسّع وصولك للعملاء' },
+  'Mobile App Development': { en: 'Launch Your App and Reach More Customers', ar: 'أطلق تطبيقك ووسّع وصولك للعملاء' },
+  'SEO Optimization': { en: 'Get Found by People Searching for Your Service', ar: 'خلي عملاءك يلاقوك بسهولة على جوجل' },
+  'Hosting & Domain Setup': { en: 'Launch Your Website with Speed & Security', ar: 'شغّل موقعك بسرعة وأمان' },
+  'Website Customization': { en: 'Upgrade Your Website for Better Results', ar: 'طوّر موقعك وحقق نتائج أفضل' },
+};
+
 interface Service {
   id: string;
   title_en: string;
@@ -40,6 +42,12 @@ interface Service {
   description_ar: string;
   icon_name: string;
   display_order: number;
+}
+
+function getCtaText(titleEn: string, language: string): string {
+  const cta = ctaMap[titleEn.trim()];
+  if (cta) return language === 'ar' ? cta.ar : cta.en;
+  return language === 'ar' ? 'اطلب الآن' : 'Get Started';
 }
 
 export default function ServicesSection() {
@@ -59,7 +67,6 @@ export default function ServicesSection() {
           .select('*')
           .eq('status', 'active')
           .order('display_order', { ascending: true });
-
         if (error) throw error;
         setServices(data || []);
       } catch (error) {
@@ -68,7 +75,6 @@ export default function ServicesSection() {
         setLoading(false);
       }
     };
-
     fetchServices();
   }, []);
 
@@ -80,7 +86,6 @@ export default function ServicesSection() {
     );
   }
 
-  // Empty state - show message instead of nothing
   if (!services || services.length === 0) {
     return (
       <section id="services" className="py-20 md:py-32 bg-muted/30">
@@ -101,14 +106,12 @@ export default function ServicesSection() {
 
   return (
     <section id="services" className="py-20 md:py-32 bg-muted/30 relative overflow-hidden">
-      {/* Background Pattern */}
       <div className="absolute inset-0 -z-10 opacity-[0.02]" style={{
         backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)`,
         backgroundSize: '40px 40px'
       }} />
 
       <div className="container mx-auto px-4" ref={ref}>
-        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -123,12 +126,12 @@ export default function ServicesSection() {
           </h2>
         </motion.div>
 
-        {/* Services Grid */}
         <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
           {services.map((service, index) => {
             const IconComponent = iconMap[service.icon_name] || Palette;
             const color = colorMap[service.icon_name] || 'from-primary to-primary/60';
-            
+            const ctaText = getCtaText(service.title_en, language);
+
             return (
               <motion.div
                 key={service.id}
@@ -137,15 +140,12 @@ export default function ServicesSection() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group relative bg-card border border-border rounded-2xl p-6 md:p-8 hover:border-primary/30 transition-all duration-300 hover:shadow-xl overflow-hidden"
               >
-                {/* Gradient Overlay on Hover */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none`} />
-                
-                {/* Icon */}
+
                 <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
                   <IconComponent className="w-7 h-7 text-primary-foreground" />
                 </div>
 
-                {/* Content */}
                 <h3 className={`text-xl md:text-2xl font-bold mb-3 group-hover:text-gradient transition-colors ${dir === 'rtl' ? 'font-arabic-heading' : ''}`}>
                   {language === 'ar' ? service.title_ar : service.title_en}
                 </h3>
@@ -153,17 +153,15 @@ export default function ServicesSection() {
                   {language === 'ar' ? service.description_ar : service.description_en}
                 </p>
 
-                {/* CTA Button */}
                 <Button
                   size="sm"
-                  variant="outline"
-                  className="group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
                   onClick={() => {
                     setSelectedService(language === 'ar' ? service.title_ar : service.title_en);
                     setLeadFormOpen(true);
                   }}
                 >
-                  {language === 'ar' ? 'اطلب الآن' : 'Get Started'}
+                  {ctaText}
                   <ArrowUpRight className={`w-4 h-4 ${dir === 'rtl' ? 'mr-1' : 'ml-1'}`} />
                 </Button>
               </motion.div>
